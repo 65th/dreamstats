@@ -1,25 +1,18 @@
 <?php
 
-require('../vendor/autoload.php');
+$dbconn = pg_connect(getenv('DATABASE_URL')) or die (".!. " . pg_last_error());
 
-$app = new Silex\Application();
-$app['debug'] = true;
+$query = "SELECT * FROM test_table";
+$result = pg_query($query);
 
-// Register the monolog logging service
-$app->register(new Silex\Provider\MonologServiceProvider(), array(
-  'monolog.logfile' => 'php://stderr',
-));
+$rows = [];
+while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
+	$rows[] = $line;
+}
+echo "<pre>"; print_r($rows); echo "</pre>";
 
-// Register view rendering
-$app->register(new Silex\Provider\TwigServiceProvider(), array(
-    'twig.path' => __DIR__.'/views',
-));
+pg_free_result($result);
 
-// Our web handlers
+pg_close($dbconn);
 
-$app->get('/', function() use($app) {
-  $app['monolog']->addDebug('logging output.');
-  return $app['twig']->render('index.twig');
-});
-
-$app->run();
+print_r(parse_url(getenv('DATABASE_URL')));
