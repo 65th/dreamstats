@@ -1,6 +1,6 @@
 CREATE TABLE player
 (
-  id       INTEGER PRIMARY KEY NOT NULL,
+  id       SERIAL PRIMARY KEY NOT NULL,
   nickname VARCHAR(20)         NOT NULL,
   race     VARCHAR             NOT NULL,
   country  VARCHAR(2)          NOT NULL
