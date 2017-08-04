@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Dreamstats</title>
+    {% include 'commonHeader.twig' %}
+</head>
+<body>
+{% include 'navbar.twig' %}
+{% import 'macro/playerMacro.twig' as pm %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <table class="my-table table-bordered table-striped sortable-table">
+                <thead>
+                <tr>
+                    <th>C</th>
+                    <th>R</th>
+                    <th>Player</th>
+                    <th>W</th>
+                    <th>L</th>
+                    <th>G</th>
+                    <th>Stats</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for player in players %}
+                    <tr>
+                        <td><img src="/img/flag/{{ player.country }}.png"></td>
+                        <td><img src="/img/race/{{ player.race }}.gif"></td>
+                        <td><a href="/player/{{ player.id }}">{{ player.nickname }}</a></td>
+                        <td>{{ player.statistics['total'].wins }}</td>
+                        <td>{{ player.statistics['total'].loses }}</td>
+                        <td>{{ player.statistics['total'].wins + player.statistics['total'].loses }}</td>
+                        <td>{{ player.statistics['total'].loses > 0 or player.statistics['total'].wins > 0 ? (player.statistics['total'].wins * 100 / (player.statistics['total'].wins + player.statistics['total'].loses))|round(1) : 0 }}
+                            %
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

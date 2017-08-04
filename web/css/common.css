@@ -1,0 +1,19 @@
+nav {
+    margin-bottom: 10px;
+}
+
+.winner {
+    font-weight: bold;
+}
+
+.container {
+    margin-top: 20px;
+}
+
+.my-table td, .my-table th {
+    padding: 2px 5px 2px 5px;
+}
+
+.my-row {
+    margin-bottom: 10px;
+}

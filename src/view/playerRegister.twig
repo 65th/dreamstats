@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Add new player</title>
+    {% include 'commonHeader.twig' %}
+</head>
+<body>
+{% include 'navbar.twig' %}
+{% import 'macro/playerMacro.twig' as pm %}
+<div class="container">
+    {% if player %}
+        <div class="alert alert-success" role="alert">
+            Registered {{ pm.player(player) }}
+        </div>
+    {% endif %}
+    <div class="row">
+        <div class="col-md-12">
+            <form class="form-inline" method="POST">
+                <label class="sr-only" for="inlineFormInput">Name</label>
+                <select class="form-control mr-sm-2" name="country">
+                    <option value="ru">Russia</option>
+                    <option value="ua">Ukraine</option>
+                    <option value="by">Belarus</option>
+                    <option value="kz">Kazackhstan</option>
+                </select>
+                <select class="form-control mr-sm-2" name="race">
+                    <option value="h">Human</option>
+                    <option value="o">Orc</option>
+                    <option value="u">Undead</option>
+                    <option value="n">Night Elf</option>
+                </select>
+                <input type="text" class="form-control mr-sm-2" name="nickname" placeholder="Nickname">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

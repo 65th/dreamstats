@@ -1,7 +1,16 @@
 <?php
 
 require_once __DIR__ . '/../vendor/autoload.php';
-require_once __DIR__ . '/../src/config/ConfigResolver.php';
+spl_autoload_register(function ($classname) {
+    $path = __DIR__ . "/../src/model/" . $classname . ".php";
+    if (file_exists($path)) {
+        require_once $path;
+    } elseif (file_exists(__DIR__ . "/../src/service/" . $classname . ".php")) {
+        require_once __DIR__ . "/../src/service/" . $classname . ".php";
+    } else {
+        require_once(__DIR__ . "/../src/controller/" . $classname . ".php");
+    }
+});
 
 $dbSettings = parse_url(getenv('DATABASE_URL'));
 
@@ -20,14 +29,33 @@ $container['pdo'] = function () {
     return $pdo;
 };
 
-$app->get("/", function (\Slim\Http\Request $req, \Slim\Http\Response $res) use ($app) {
-    $pdo = $app->getContainer()['pdo'];
-    $r = $pdo->query("SELECT * FROM test_table");
-    foreach ($r as $x) {
-        pre_print_r($x);
-    }
-    $res->getBody()->write("done");
-});
+$container['view'] = function ($container) {
+    $view = new \Slim\Views\Twig(__DIR__ . '/../src/view', ['cache' => false]);
+    $basePath = rtrim(str_ireplace('index.php', '', $container['request']->getUri()->getBasePath()), '/');
+    $view->addExtension(new Slim\Views\TwigExtension($container['router'], $basePath));
+
+    return $view;
+};
+
+$container['playerService'] = function () use ($container) {
+    return new PlayerService($container['pdo']);
+};
+$container['eventService'] = function () use ($container) {
+    return new EventService($container['pdo']);
+};
+$container['matchService'] = function () use ($container) {
+    return new MatchService($container['pdo']);
+};
+
+$app->get("/", IndexController::class . ":index");
+$app->get("/player/new", PlayerController::class . ":showRegisterForm");
+$app->post("/player/new", PlayerController::class . ":register");
+$app->get("/player/{id}", PlayerController::class . ":show");
+$app->get("/event/new", EventController::class . ":showRegisterPage");
+$app->post("/event/new", EventController::class . ":register");
+
+$app->get("/match/new", MatchController::class . ":showRegisterForm");
+$app->post("/api/match", MatchController::class . ":registerApi");
 
 $app->run();
 

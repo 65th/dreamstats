@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Add Match</title>
+    {% include 'commonHeader.twig' %}
+</head>
+<body>
+{% include 'navbar.twig' %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-success" style="display: none;">
+                <span id="alert-text"></span>
+            </div>
+            <form class="form-inline" method="POST">
+                <select class="form-control mr-sm-2" name="player">
+                    {% for player in players %}
+                        <option value="{{ player.id }}">{{ player.nickname }}</option>
+                    {% endfor %}
+                </select>
+                <input id="wins" type="text" class="form-control mr-sm-2 points-input" name="wins">
+                <input id="loses" type="text" class="form-control mr-sm-2 points-input" name="loses">
+                <select class="form-control mr-sm-2" name="enemy">
+                    {% for player in players %}
+                        <option value="{{ player.id }}">{{ player.nickname }}</option>
+                    {% endfor %}
+                </select>
+                <select class="form-control mr-sm-2" name="event">
+                    {% for event in events %}
+                        <option value="{{ event.id }}">{{ event.name }}</option>
+                    {% endfor %}
+                </select>
+                <button id="post-btn" type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    $("document").ready(function () {
+        $("#post-btn").click(function (e) {
+            e.preventDefault();
+            $.ajax({
+                method: "POST",
+                url: "/../api/match",
+                data: $("form").serialize(),
+                accepts: "application/json"
+            }).done(function(response) {
+                let match = response.match;
+                $("#alert-text").html(`Saved: ${match.player.nickname} ${match.score.wins} - ${match.score.loses} ${match.enemy.nickname} @ ${match.event.name}`);
+                $(".alert").show();
+            }).fail(function() {
+                alert("GG");
+            });
+        })
+    });
+</script>
+</body>
+</html>

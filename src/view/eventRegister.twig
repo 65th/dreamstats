@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Add new player</title>
+    {% include 'commonHeader.twig' %}
+</head>
+<body>
+{% include 'navbar.twig' %}
+<div class="container">
+    {% if event %}
+        <div class="alert alert-success" role="alert">
+            Registered {{ event.name }} {{ event.date }}
+        </div>
+    {% endif %}
+    <div class="row">
+        <div class="col-md-12">
+            <form class="form-inline" method="POST">
+                <input type="text" class="form-control mr-sm-2" name="name" placeholder="Name">
+                <input type="text" class="form-control mr-sm-2" name="date" placeholder="Date">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

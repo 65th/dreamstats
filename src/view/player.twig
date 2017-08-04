@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{{ player.nickname }}</title>
+    {% include 'commonHeader.twig' %}
+</head>
+<body>
+{% include 'navbar.twig' %}
+{% import 'macro/playerMacro.twig' as pm %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <p>{{ pm.player(player) }}</p>
+        </div>
+    </div>
+    <div class="row my-row">
+        <div class="col-sm-12">
+            <table class="my-table table-bordered table-striped">
+                {% for race, stat in player.statistics['byRace'] %}
+                    <tr>
+                        <td><img src="/img/race/{{ race }}.gif"></td>
+                        <td>{{ stat['total'].wins }} - {{ stat['total'].loses }}</td>
+                        <td>{{ stat['total'].loses > 0 or stat['total'].wins > 0 ? (stat['total'].wins * 100 / (stat['total'].wins + stat['total'].loses))|round(1) : 0 }}%</td>
+                        <td>({{ stat['maps'].wins }} - {{ stat['maps'].loses }})</td>
+                        <td>{{ stat['maps'].loses > 0 or stat['maps'].wins > 0 ? (stat['maps'].wins * 100 / (stat['maps'].wins + stat['maps'].loses))|round(1) : 0 }}%</td>
+                    </tr>
+                {% endfor %}
+                <tr>
+                    <td></td>
+                    <td>{{ player.statistics['total'].wins }} - {{ player.statistics['total'].loses }}</td>
+                    <td>{{ player.statistics['total'].loses > 0 or player.statistics['total'].wins > 0 ? (player.statistics['total'].wins * 100 / (player.statistics['total'].wins + player.statistics['total'].loses))|round(1) : 0 }}%</td>
+                    <td>{{ player.statistics['maps'].wins }} - {{ player.statistics['maps'].loses }}</td>
+                    <td>{{ player.statistics['maps'].loses > 0 or player.statistics['maps'].wins > 0 ? (player.statistics['maps'].wins * 100 / (player.statistics['maps'].wins + player.statistics['maps'].loses))|round(1) : 0 }}%</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="row my-row">
+        <div class="col-md-12">
+            <table class="my-table table-bordered table-striped">
+                {% for match in matches %}
+                    <tr>
+                        <td class="{{ match.score.wins > match.score.loses ? "winner" }}">{{ pm.player(match.player) }}</td>
+                        <td>{{ match.score.wins }} - {{ match.score.loses }}</td>
+                        <td class="{{ match.score.wins < match.score.loses ? "winner" }}">{{ pm.player(match.enemy) }}</td>
+                        <td>@ {{ match.event.name }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
