@@ -18,10 +18,9 @@
             <form class="form-inline" method="POST">
                 <label class="sr-only" for="inlineFormInput">Name</label>
                 <select class="form-control mr-sm-2" name="country">
-                    <option value="ru">Russia</option>
-                    <option value="ua">Ukraine</option>
-                    <option value="by">Belarus</option>
-                    <option value="kz">Kazackhstan</option>
+                {% for key, country in countries %}
+                    <option value="{{ key }}">{{ country }}</option>
+                {% endfor %}
                 </select>
                 <select class="form-control mr-sm-2" name="race">
                     <option value="h">Human</option>
