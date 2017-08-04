@@ -23,11 +23,11 @@ class MatchService extends PdoService {
                            INNER JOIN player p ON m.player_id = p.id
                            INNER JOIN player o ON m.enemy_id = o.id
                            INNER JOIN event e ON m.event_id = e.id
-                           WHERE player_id = 1 OR enemy_id = 1
+                           WHERE player_id = :id OR enemy_id = :id
                            ORDER BY m.id DESC";
 
         $statement = $this->pdo->prepare($matchesSql);
-        $statement->execute([]);
+        $statement->execute([":id" => $player->id]);
 
         $matches = [];
         $result = $statement->fetchAll();
