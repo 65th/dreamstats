@@ -25,8 +25,9 @@ class PlayerController extends DefaultController {
         $matches = $this->matchService->findByPlayer($player);
         $statistics = new Statistics($matches);
         $player->statistics = $statistics->get();
+        $dreamsPlayers = $this->playerService->findAll(true);
 
-        return $this->view->render($res, 'player.twig', ["player" => $player, "matches" => $matches]);
+        return $this->view->render($res, 'player.twig', ["player" => $player, "matches" => $matches, "dreamsPlayers" => $dreamsPlayers]);
     }
 
     public function showRegisterForm(Request $req, Response $res) {

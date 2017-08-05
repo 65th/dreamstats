@@ -14,11 +14,7 @@ class PlayerService extends PdoService {
         $result = $this->pdo->query($sql);
         $players = [];
         foreach ($result as $row) {
-            $player = new Player;
-            $player->id = $row['id'];
-            $player->nickname = $row['nickname'];
-            $player->race = $row['race'];
-            $player->country = $row['country'];
+            $player = $this->extractPlayer($row, "");
             $players[] = $player;
         }
 

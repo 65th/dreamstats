@@ -9,9 +9,19 @@
 {% import 'macro/playerMacro.twig' as pm %}
 
 <div class="container">
-    <div class="row">
+    <div class="row my-row">
         <div class="col-md-12">
-            <p>{{ pm.player(player) }}</p>
+            <div>{{ pm.player(player) }}</div>
+        </div>
+    </div>
+    <div class="row my-row">
+        <div class="col-md-12">
+            <a class="btn btn-primary btn-sm" id="check-stats" target="_blank">Check stats vs:</a>
+            <select id="vs">
+                {% for player in dreamsPlayers %}
+                    <option value="{{ player.id }}">{{ player.nickname }}</option>
+                {% endfor %}
+            </select>
         </div>
     </div>
     <div class="row my-row">
@@ -51,6 +61,21 @@
         </div>
     </div>
 </div>
+
+<script>
+    $("document").ready(function() {
+        let vsEl = $("#vs");
+        initCheckStatsUrl($(vsEl).val());
+        $(vsEl).change(function() {
+            let playerId = $(this).val();
+            initCheckStatsUrl(playerId);
+        })
+    });
+
+    function initCheckStatsUrl(playerId) {
+        $("#check-stats").attr("href", `${window.location.href }/vs/${playerId}`);
+    }
+</script>
 
 </body>
 </html>

@@ -7,7 +7,8 @@ class Countries {
             "ua" => "Ukraine",
             "by" => "Belarus",
             "kz" => "Kazakhstan",
-            "de" => "Germany"
+            "de" => "Germany",
+            "md" => "Moldova"
         ];
     }
 }

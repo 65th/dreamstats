@@ -14,7 +14,7 @@
             </div>
             <form class="form-inline" method="POST">
                 <select class="form-control mr-sm-2" name="player">
-                    {% for player in players %}
+                    {% for player in players if player.isFromDreams %}
                         <option value="{{ player.id }}">{{ player.nickname }}</option>
                     {% endfor %}
                 </select>
