@@ -30,8 +30,7 @@ class PlayerController extends DefaultController {
     }
 
     public function showRegisterForm(Request $req, Response $res) {
-        $countries = Countries::all();
-        return $this->view->render($res, 'playerRegister.twig', ['countries' => $countries]);
+        return $this->view->render($res, 'playerRegister.twig', ['countries' =>  Countries::all()]);
     }
 
     public function register(Request $req, Response $res) {
@@ -43,6 +42,6 @@ class PlayerController extends DefaultController {
 
         $this->playerService->insert($player);
 
-        return $this->view->render($res, 'playerRegister.twig', ["player" => $player]);
+        return $this->view->render($res, 'playerRegister.twig', ["player" => $player, "countries" => Countries::all()]);
     }
 }

@@ -7,7 +7,7 @@ class EventService extends PdoService {
     }
 
     public function findAll() {
-        $query = "SELECT * FROM event";
+        $query = "SELECT * FROM event ORDER BY id DESC";
         $result = $this->pdo->query($query);
         $events = [];
         foreach ($result as $row) {
