@@ -21,7 +21,7 @@ class IndexController extends DefaultController {
 
 
     public function index(Request $req, Response $res) {
-        $players = $this->playerService->findAll();
+        $players = $this->playerService->findAll(true);
         foreach ($players as $player) {
             $matches = $this->matchService->findByPlayer($player);
             $stats = new Statistics($matches);

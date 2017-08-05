@@ -39,9 +39,19 @@ class PlayerController extends DefaultController {
         $player->nickname = $data['nickname'];
         $player->race = $data['race'];
         $player->country = $data['country'];
+        $player->isFromDreams = !empty($data['isFromDreams']);
 
         $this->playerService->insert($player);
 
         return $this->view->render($res, 'playerRegister.twig', ["player" => $player, "countries" => Countries::all()]);
+    }
+
+    public function compare(Request $req, Response $res) {
+        $player = $this->playerService->findById($req->getAttribute("playerId"));
+        $enemy = $this->playerService->findById($req->getAttribute("enemyId"));
+        $matches = $this->matchService->findByPlayers($player, $enemy);
+        $statistics = new Statistics($matches);
+
+        return $this->view->render($res, "playerCompare.twig", ["player" => $player, "enemy" => $enemy, "matches" => $matches, "statistics" => $statistics->get()]);
     }
 }

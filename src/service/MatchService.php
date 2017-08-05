@@ -5,7 +5,7 @@ class MatchService extends PdoService {
         $statement = $this->pdo->prepare("INSERT INTO solo_match (player_id, enemy_id, event_id, player_wins, enemy_wins)
                                           VALUES (:playerId, :enemyId, :eventId, :playerWins, :enemyWins)");
         $statement->execute([
-           ":playerId" => $match->player->id,
+            ":playerId" => $match->player->id,
             ":enemyId" => $match->enemy->id,
             ":eventId" => $match->event->id,
             ":playerWins" => $match->score->wins,
@@ -16,6 +16,17 @@ class MatchService extends PdoService {
     }
 
     public function findByPlayer(Player $player) {
+        return $this->findWhere($player, "player_id = :id OR enemy_id = :id", [":id" => $player->id]);
+    }
+
+
+    public function findByPlayers(Player $player, Player $enemy) {
+        return $this->findWhere($player,
+            "(player_id = :playerId AND enemy_id = :enemyId) OR (player_id = :enemyId AND enemy_id = :playerId)",
+            [":playerId" => $player->id, ":enemyId" => $enemy->id]);
+    }
+
+    private function findWhere(Player $mainPlayer, $where, $bindings) {
         $matchesSql = "SELECT m.*, p.id AS player_id, p.nickname AS player_nickname, p.race AS player_race, p.country as player_country,
                            o.id AS enemy_id, o.nickname AS enemy_nickname, o.race AS enemy_race, o.country as enemy_country,
                            e.id as event_id, e.name as event_name, e.date as event_date
@@ -23,19 +34,19 @@ class MatchService extends PdoService {
                            INNER JOIN player p ON m.player_id = p.id
                            INNER JOIN player o ON m.enemy_id = o.id
                            INNER JOIN event e ON m.event_id = e.id
-                           WHERE player_id = :id OR enemy_id = :id
+                           WHERE $where
                            ORDER BY m.id DESC";
 
         $statement = $this->pdo->prepare($matchesSql);
-        $statement->execute([":id" => $player->id]);
+        $statement->execute($bindings);
 
         $matches = [];
         $result = $statement->fetchAll();
         foreach ($result as $row) {
             $match = new Match();
             $match->id = $row['id'];
-            $match->player = $player;
-            if ($row['player_id'] == $player->id) {
+            $match->player = $mainPlayer;
+            if ($row['player_id'] == $mainPlayer->id) {
                 $match->enemy = $this->extractPlayer($row, "enemy_");
                 $match->score = new Score($row['player_wins'], $row['enemy_wins']);
             } else {

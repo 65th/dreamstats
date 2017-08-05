@@ -28,3 +28,5 @@ CREATE TABLE public.solo_match
   CONSTRAINT solo_match__event_fk FOREIGN KEY (event_id) REFERENCES event (id)
 );
 CREATE UNIQUE INDEX solo_match_id_uindex ON public.solo_match (id);
+
+ALTER TABLE public.player ADD is_from_dreams BOOLEAN DEFAULT FALSE NOT NULL;

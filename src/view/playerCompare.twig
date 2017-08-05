@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{{ player.nickname }}</title>
+    {% include 'commonHeader.twig' %}
+</head>
+<body>
+{% include 'navbar.twig' %}
+{% import 'macro/playerMacro.twig' as pm %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <p>
+                <span class="{{ statistics['total'].wins > statistics['total'].loses ? "winner" }}">{{ pm.player(player) }}</span>
+                {{ statistics['total'].wins }} - {{ statistics['total'].loses }}
+                ({{ statistics['maps'].wins }} - {{ statistics['maps'].loses }})
+                 <span class="{{ statistics['total'].wins < statistics['total'].loses ? "winner" }}">{{ pm.player(enemy) }}</span>
+            </p>
+        </div>
+    </div>
+    <div class="row my-row">
+        <div class="col-md-12">
+            <table class="my-table table-bordered table-striped">
+            </table>
+        </div>
+    </div>
+    <div class="row my-row">
+        <div class="col-md-12">
+            <table class="my-table table-bordered table-striped">
+                {% for match in matches %}
+                    <tr>
+                        <td class="{{ match.score.wins > match.score.loses ? "winner" }}">{{ pm.player(match.player) }}</td>
+                        <td>{{ match.score.wins }} - {{ match.score.loses }}</td>
+                        <td class="{{ match.score.wins < match.score.loses ? "winner" }}">{{ pm.player(match.enemy) }}</td>
+                        <td>@ {{ match.event.name }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -5,6 +5,7 @@ class Player {
     public $nickname;
     public $race;
     public $country;
+    public $isFromDreams;
     public $achievements = array();
     public $statistics = array();
 }

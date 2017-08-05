@@ -16,6 +16,7 @@ abstract class PdoService {
         $player->nickname = $row[$prefix . 'nickname'];
         $player->country = $row[$prefix . 'country'];
         $player->race = $row[$prefix . 'race'];
+        $player->isFromDreams = !empty($row[$prefix . 'is_from_dreams']) && $row[$prefix . 'is_from_dreams'];
 
         return $player;
     }

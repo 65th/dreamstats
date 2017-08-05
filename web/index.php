@@ -48,9 +48,12 @@ $container['matchService'] = function () use ($container) {
 };
 
 $app->get("/", IndexController::class . ":index");
+
 $app->get("/player/new", PlayerController::class . ":showRegisterForm");
 $app->post("/player/new", PlayerController::class . ":register");
+$app->get("/player/{playerId}/vs/{enemyId}", PlayerController::class . ":compare");
 $app->get("/player/{id}", PlayerController::class . ":show");
+
 $app->get("/event/new", EventController::class . ":showRegisterPage");
 $app->post("/event/new", EventController::class . ":register");
 
