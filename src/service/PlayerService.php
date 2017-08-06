@@ -22,8 +22,10 @@ class PlayerService extends PdoService {
     }
 
     public function findById($id) {
-        $sql = "SELECT * FROM player WHERE id = $id";
-        $result = $this->pdo->query($sql);
+        $sql = "SELECT * FROM player WHERE id = :id";
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute([':id' => $id]);
+        $result = $statement->fetchAll();
 
         $player = null;
         if ($result) {
