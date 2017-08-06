@@ -27,6 +27,9 @@ class IndexController extends DefaultController {
             $stats = new Statistics($matches);
             $player->statistics = $stats->get();
         }
-        return $this->view->render($res, 'index.twig', ['players' => $players]);
+
+        $this->options['players'] = $players;
+
+        return $this->render($res, 'index.twig');
     }
 }

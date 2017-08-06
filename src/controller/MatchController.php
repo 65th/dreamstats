@@ -24,13 +24,24 @@ class MatchController extends DefaultController {
     }
 
     public function showRegisterForm(Request $req, Response $res) {
+        $forbidden = $this->forbidIfNotAdmin($res);
+        if ($forbidden) return $forbidden;
+
         $players = $this->playerService->findAll();
         $events = $this->eventService->findAll();
 
-        return $this->view->render($res, 'matchNew.twig', ['players' => $players, 'events' => $events]);
+        $this->options += [
+            'players' => $players,
+            'events' => $events
+        ];
+
+        return $this->render($res, 'matchNew.twig');
     }
 
     public function registerApi(Request $req, Response $res) {
+        $forbidden = $this->forbidIfNotAdmin($res);
+        if ($forbidden) return $forbidden;
+
         $data = $req->getParsedBody();
         $match = new Match();
         $match->player = $this->playerService->findById($data['player']);

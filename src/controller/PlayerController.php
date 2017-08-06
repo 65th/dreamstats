@@ -27,14 +27,23 @@ class PlayerController extends DefaultController {
         $player->statistics = $statistics->get();
         $dreamsPlayers = $this->playerService->findAll(true);
 
-        return $this->view->render($res, 'player.twig', ["player" => $player, "matches" => $matches, "dreamsPlayers" => $dreamsPlayers]);
+        $this->options += ["player" => $player, "matches" => $matches, "dreamsPlayers" => $dreamsPlayers];
+
+        return $this->render($res, 'player.twig');
     }
 
     public function showRegisterForm(Request $req, Response $res) {
-        return $this->view->render($res, 'playerRegister.twig', ['countries' =>  Countries::all()]);
+        $forbidden = $this->forbidIfNotAdmin($res);
+        if ($forbidden) return $forbidden;
+
+        $this->options += ['countries' =>  Countries::all()];
+        return $this->render($res, 'playerRegister.twig');
     }
 
     public function register(Request $req, Response $res) {
+        $forbidden = $this->forbidIfNotAdmin($res);
+        if ($forbidden) return $forbidden;
+
         $data = $req->getParsedBody();
         $player = new Player();
         $player->nickname = $data['nickname'];
@@ -44,7 +53,9 @@ class PlayerController extends DefaultController {
 
         $this->playerService->insert($player);
 
-        return $this->view->render($res, 'playerRegister.twig', ["player" => $player, "countries" => Countries::all()]);
+        $this->options += ["player" => $player, "countries" => Countries::all()];
+
+        return $this->render($res, 'playerRegister.twig');
     }
 
     public function compare(Request $req, Response $res) {
@@ -53,6 +64,8 @@ class PlayerController extends DefaultController {
         $matches = $this->matchService->findByPlayers($player, $enemy);
         $statistics = new Statistics($matches);
 
-        return $this->view->render($res, "playerCompare.twig", ["player" => $player, "enemy" => $enemy, "matches" => $matches, "statistics" => $statistics->get()]);
+        $this->options += ["player" => $player, "enemy" => $enemy, "matches" => $matches, "statistics" => $statistics->get()];
+
+        return $this->render($res, "playerCompare.twig");
     }
 }

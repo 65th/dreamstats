@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Login</title>
+    {% include 'commonHeader.twig' %}
+</head>
+<body>
+{% include 'navbar.twig' %}
+<div class="container">
+    {% if message %}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="alert alert-info">
+                    <strong>{{ message }}</strong>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    <div class="row">
+        <div class="col-md-12">
+            {% if not currentUser.authorized %}
+                <form class="form-inline" method="POST">
+                    <div class="form-group mx-sm-3">
+                        <input name="username" class="form-control" placeholder="Username">
+                    </div>
+                    <div class="form-group mx-sm-3">
+                        <input type="password" class="form-control" name="password" placeholder="Password">
+                    </div>
+                    <button type="submit" class="btn btn-success">Login</button>
+                </form>
+            {% else %}
+                <form class="form-inline" method="POST" action="/logout">
+                    <button type="submit" class="btn btn-danger">Logout</button>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+</div>
+</body>
+</html>

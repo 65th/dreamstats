@@ -6,16 +6,29 @@
     </button>
     <a class="navbar-brand" href="/"><img src="/img/logo.png"></a>
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
-        <ul class="navbar-nav">
+        <ul class="nav navbar-nav mr-auto">
+            {% if currentUser.admin %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/player/new">Add Player</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/match/new">Add Match</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/event/new">Add Event</a>
+                </li>
+            {% endif %}
+        </ul>
+
+        <ul class="nav navbar-nav navbar-right">
             <li class="nav-item">
-                <a class="nav-link" href="/player/new">Add Player</a>
+                <a class="nav-link" href="/login">{{ currentUser.authorized ? "Logout" : "Login" }}</a>
             </li>
-            <li>
-                <a class="nav-link" href="/match/new">Add Match</a>
-            </li>
-            <li>
-                <a class="nav-link" href="/event/new">Add Event</a>
-            </li>
+            {% if currentUser.authorized %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/"><b>{{ currentUser.username }}</b></a>
+                </li>
+            {% endif %}
         </ul>
     </div>
 </nav>

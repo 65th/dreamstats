@@ -15,7 +15,7 @@ spl_autoload_register(function ($classname) {
 $dbSettings = parse_url(getenv('DATABASE_URL'));
 
 $config = [
-    'displayErrorDetails' => true
+    'displayErrorDetails' => $_SERVER['SERVER_NAME'] === "localhost"
 ];
 
 $app = new \Slim\App(['settings' => $config]);
@@ -60,6 +60,11 @@ $app->post("/event/new", EventController::class . ":register");
 $app->get("/match/new", MatchController::class . ":showRegisterForm");
 $app->post("/api/match", MatchController::class . ":registerApi");
 
+$app->get("/login", LoginController::class . ":showLoginPage");
+$app->post("/login", LoginController::class . ":login");
+$app->post("/logout", LoginController::class . ":logout");
+
+session_start();
 $app->run();
 
 function pre_print_r($x) {
