@@ -8,7 +8,8 @@ class Countries {
             "by" => "Belarus",
             "kz" => "Kazakhstan",
             "de" => "Germany",
-            "md" => "Moldova"
+            "md" => "Moldova",
+            "lv" => "Latvia"
         ];
     }
 }
