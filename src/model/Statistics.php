@@ -48,7 +48,7 @@ class Statistics {
             if ($score->wins > $score->loses) {
                 $statistics['byRace'][$match->enemy->race]['total']->wins++;
                 $statistics['total']->wins++;
-            } else {
+            } elseif ($score->wins < $score->loses) {
                 $statistics['byRace'][$match->enemy->race]['total']->loses++;
                 $statistics['total']->loses++;
             }
