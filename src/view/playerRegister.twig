@@ -8,30 +8,30 @@
 {% include 'navbar.twig' %}
 {% import 'macro/playerMacro.twig' as pm %}
 <div class="container">
-    {% if player %}
-        <div class="alert alert-success" role="alert">
-            Registered {{ pm.player(player) }}
-        </div>
-    {% endif %}
     <div class="row">
         <div class="col-md-12">
-            <form class="form-inline" method="POST">
+            <form class="form-inline" method="POST" action="/player/new">
+                {% if player %}
+                    <input type="hidden" name="id" value="{{ player.id }}">
+                {% endif %}
                 <label class="sr-only" for="inlineFormInput">Name</label>
                 <select class="form-control mr-sm-2" name="country">
-                {% for key, country in countries %}
-                    <option value="{{ key }}">{{ country }}</option>
-                {% endfor %}
+                    {% for key, country in countries %}
+                        <option value="{{ key }}" {{ key == player.country ? "selected" }}>{{ country }}</option>
+                    {% endfor %}
                 </select>
                 <select class="form-control mr-sm-2" name="race">
-                    <option value="h">Human</option>
-                    <option value="o">Orc</option>
-                    <option value="u">Undead</option>
-                    <option value="n">Night Elf</option>
+                    <option value="h" {{ player.race == "h" ? "selected" }}>Human</option>
+                    <option value="o" {{ player.race == "o" ? "selected" }}>Orc</option>
+                    <option value="u" {{ player.race == "u" ? "selected" }}>Undead</option>
+                    <option value="n" {{ player.race == "n" ? "selected" }}>Night Elf</option>
                 </select>
-                <input type="text" class="form-control mr-sm-2" name="nickname" placeholder="Nickname">
+                <input type="text" class="form-control mr-sm-2" name="nickname" placeholder="Nickname"
+                       value="{{ player.nickname }}">
                 <div class="form-check form-check-inline mr-sm-2">
                     <label class="form-check-label">
-                        <input class="form-check-input" type="checkbox" name="isFromDreams" value="1"> Is from DreamS
+                        <input class="form-check-input" type="checkbox" name="isFromDreams"
+                               value="1" {{ player.isFromDreams ? "checked" }}> Is from DreamS
                     </label>
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>

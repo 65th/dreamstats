@@ -41,11 +41,28 @@ class PlayerService extends PdoService {
     public function insert(Player $player) {
         $sql = "INSERT INTO player (nickname, race, country, is_from_dreams)
                 VALUES (:nickname, :race, :country, :isFromDreams)";
-        $this->pdo->prepare($sql)->execute([
+        $this->pdo->prepare($sql)->execute($this->resolvePlayerOptions($player));
+
+        $player->id = $this->pdo->lastInsertId("player_id_seq");
+    }
+
+    public function update(Player $player) {
+        $sql = "UPDATE player SET nickname = :nickname, race = :race, country = :country, is_from_dreams = :isFromDreams
+                WHERE id = :id";
+        $this->pdo->prepare($sql)->execute($this->resolvePlayerOptions($player));
+    }
+
+    private function resolvePlayerOptions(Player $player) {
+        $options =  [
             ":nickname" => $player->nickname,
             ":race" => $player->race,
             ":country" => $player->country,
             ":isFromDreams" => $player->isFromDreams ? "TRUE" : "FALSE"
-        ]);
+        ];
+        if ($player->id) {
+            $options['id'] = $player->id;
+        }
+
+        return $options;
     }
 }

@@ -1,6 +1,6 @@
 <?php
-use \Psr\Http\Message\ServerRequestInterface as Request;
-use \Psr\Http\Message\ResponseInterface as Response;
+use Slim\Http\Request;
+use Slim\Http\Response;
 
 class PlayerController extends DefaultController {
     /**
@@ -40,6 +40,17 @@ class PlayerController extends DefaultController {
         return $this->render($res, 'playerRegister.twig');
     }
 
+    public function showEditForm(Request $req, Response $res) {
+        $forbidden = $this->forbidIfNotAdmin($res);
+        if ($forbidden) return $forbidden;
+
+        $id = $req->getAttribute('id');
+        $player = $this->playerService->findById($id);
+        $this->options += ['player' => $player, 'countries' =>  Countries::all()];
+
+        return $this->render($res, 'playerRegister.twig');
+    }
+
     public function register(Request $req, Response $res) {
         $forbidden = $this->forbidIfNotAdmin($res);
         if ($forbidden) return $forbidden;
@@ -51,11 +62,16 @@ class PlayerController extends DefaultController {
         $player->country = $data['country'];
         $player->isFromDreams = !empty($data['isFromDreams']);
 
-        $this->playerService->insert($player);
+        if (empty($data['id'])) {
+            $this->playerService->insert($player);
+        } else {
+            $player->id = $data['id'];
+            $this->playerService->update($player);
+        }
 
         $this->options += ["player" => $player, "countries" => Countries::all()];
 
-        return $this->render($res, 'playerRegister.twig');
+        return $res->withRedirect("/player/$player->id/edit");
     }
 
     public function compare(Request $req, Response $res) {

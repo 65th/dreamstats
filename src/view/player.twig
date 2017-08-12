@@ -11,7 +11,12 @@
 <div class="container">
     <div class="row my-row">
         <div class="col-md-12">
-            <div>{{ pm.player(player) }}</div>
+            <div>
+                {{ pm.player(player) }}
+                {% if currentUser.admin %}
+                    <a class="btn btn-warning btn-sm" href="/player/{{ player.id }}/edit">Edit</a>
+                {% endif %}
+            </div>
         </div>
     </div>
     <div class="row my-row">
