@@ -15,6 +15,24 @@ class MatchService extends PdoService {
         return $this->pdo->lastInsertId("solo_match_id_seq");
     }
 
+    public function update(Match $match) {
+        $statement = $this->pdo->prepare("UPDATE solo_match SET player_id = :playerId, enemy_id = :enemyId,
+                                          event_id = :eventId, player_wins = :playerWins, enemy_wins = :enemyWins
+                                          WHERE id = :id");
+        $statement->execute([
+            ":id" => $match->id,
+            ":playerId" => $match->player->id,
+            ":enemyId" => $match->enemy->id,
+            ":eventId" => $match->event->id,
+            ":playerWins" => $match->score->wins,
+            ":enemyWins" => $match->score->loses
+        ]);
+    }
+
+    public function findById($id) {
+        return $this->findWhere(new Player(), "m.ID = :id", [":id" => $id])[0];
+    }
+
     public function findByPlayer(Player $player) {
         return $this->findWhere($player, "player_id = :id OR enemy_id = :id", [":id" => $player->id]);
     }
@@ -45,11 +63,12 @@ class MatchService extends PdoService {
         foreach ($result as $row) {
             $match = new Match();
             $match->id = $row['id'];
-            $match->player = $mainPlayer;
             if ($row['player_id'] == $mainPlayer->id) {
+                $match->player = $this->extractPlayer($row, "player_");
                 $match->enemy = $this->extractPlayer($row, "enemy_");
                 $match->score = new Score($row['player_wins'], $row['enemy_wins']);
             } else {
+                $match->player = $this->extractPlayer($row, "enemy_");
                 $match->enemy = $this->extractPlayer($row, "player_");
                 $match->score = new Score($row['enemy_wins'], $row['player_wins']);
             }

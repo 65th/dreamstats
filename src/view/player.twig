@@ -61,6 +61,11 @@
                         <td class="{{ match.score.wins < match.score.loses ? "winner" }}">{{ pm.player(match.enemy) }}</td>
                         <td>{{ match.event.name }}</td>
                         <td>{{ match.event.date }}</td>
+                        {% if currentUser.admin  %}
+                            <td>
+                                <a href="/match/{{ match.id }}/edit" class="btn btn-sm btn-warning">Edit</a>
+                            </td>
+                        {% endif %}
                     </tr>
                 {% endfor %}
             </table>

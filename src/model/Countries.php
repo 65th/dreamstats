@@ -9,7 +9,8 @@ class Countries {
             "kz" => "Kazakhstan",
             "de" => "Germany",
             "md" => "Moldova",
-            "lv" => "Latvia"
+            "lv" => "Latvia",
+            "uz" => "Uzbekistan"
         ];
     }
 }

@@ -60,6 +60,7 @@ $app->post("/event/new", EventController::class . ":register");
 
 $app->get("/match/new", MatchController::class . ":showRegisterForm");
 $app->post("/api/match", MatchController::class . ":registerApi");
+$app->get("/match/{id}/edit", MatchController::class . ":showEditForm");
 
 $app->get("/login", LoginController::class . ":showLoginPage");
 $app->post("/login", LoginController::class . ":login");

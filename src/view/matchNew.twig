@@ -13,21 +13,24 @@
                 <span id="alert-text"></span>
             </div>
             <form class="form-inline" method="POST">
+                {% if match %}
+                    <input type="hidden" name="id" value="{{ match.id }}">
+                {% endif %}
                 <select class="form-control mr-sm-2" name="player">
-                    {% for player in players if player.isFromDreams %}
-                        <option value="{{ player.id }}">{{ player.nickname }}</option>
+                    {% for player in players if player.isFromDreams or match.player.id == player.id %}
+                        <option value="{{ player.id }}" {{ match.player.id == player.id ? "selected" }}>{{ player.nickname }}</option>
                     {% endfor %}
                 </select>
-                <input id="wins" type="text" class="score-input form-control mr-sm-2 points-input" name="wins">
-                <input id="loses" type="text" class="score-input form-control mr-sm-2 points-input" name="loses">
+                <input id="wins" type="text" class="score-input form-control mr-sm-2 points-input" name="wins" value="{{ match.score.wins }}">
+                <input id="loses" type="text" class="score-input form-control mr-sm-2 points-input" name="loses" value="{{ match.score.loses }}">
                 <select class="form-control mr-sm-2" name="enemy">
                     {% for player in players %}
-                        <option value="{{ player.id }}">{{ player.nickname }}</option>
+                        <option value="{{ player.id }}" {{ match.enemy.id == player.id ? "selected" }}>{{ player.nickname }}</option>
                     {% endfor %}
                 </select>
                 <select class="form-control mr-sm-2" name="event">
                     {% for event in events %}
-                        <option value="{{ event.id }}">{{ event.name }}</option>
+                        <option value="{{ event.id }}" {{ match.event.id == event.id ? "selected" }}>{{ event.name }}</option>
                     {% endfor %}
                 </select>
                 <button id="post-btn" type="submit" class="btn btn-primary">Submit</button>
@@ -39,6 +42,8 @@
     $("document").ready(function () {
         $("#post-btn").click(function (e) {
             e.preventDefault();
+            var btn = this;
+            $(this).prop("disabled", true);
             $.ajax({
                 method: "POST",
                 url: "/../api/match",
@@ -50,6 +55,8 @@
                 $(".alert").show();
             }).fail(function() {
                 alert("GG");
+            }).always(function() {
+               $(btn).prop("disabled", false);
             });
         })
     });
