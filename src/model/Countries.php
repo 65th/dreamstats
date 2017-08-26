@@ -10,7 +10,11 @@ class Countries {
             "de" => "Germany",
             "md" => "Moldova",
             "lv" => "Latvia",
-            "uz" => "Uzbekistan"
+            "uz" => "Uzbekistan",
+            "ca" => "Canada",
+            "us" => "USA",
+            "ve" => "Venezuela",
+            "co" => "Columbia"
         ];
     }
 }
