@@ -14,7 +14,8 @@ class Countries {
             "ca" => "Canada",
             "us" => "USA",
             "ve" => "Venezuela",
-            "co" => "Columbia"
+            "co" => "Columbia",
+            "hu" => "Hungary"
         ];
     }
 }
