@@ -15,7 +15,11 @@ class Countries {
             "us" => "USA",
             "ve" => "Venezuela",
             "co" => "Columbia",
-            "hu" => "Hungary"
+            "hu" => "Hungary",
+            "fr" => "France",
+            "it" => "Italy",
+            "se" => "Sweden"
+
         ];
     }
 }
