@@ -19,7 +19,8 @@ class Countries {
             "fr" => "France",
             "it" => "Italy",
             "se" => "Sweden",
-            "es" => "Spain"
+            "es" => "Spain",
+            "cz" => "Чехия"
 
         ];
     }
