@@ -18,7 +18,8 @@ class Countries {
             "hu" => "Hungary",
             "fr" => "France",
             "it" => "Italy",
-            "se" => "Sweden"
+            "se" => "Sweden",
+            "es" => "Spain"
 
         ];
     }
