@@ -20,7 +20,8 @@ class Countries {
             "it" => "Italy",
             "se" => "Sweden",
             "es" => "Spain",
-            "cz" => "Чехия"
+            "cz" => "Чехия",
+            "lt" => "Lithuania"
 
         ];
     }
