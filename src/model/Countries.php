@@ -21,8 +21,9 @@ class Countries {
             "se" => "Sweden",
             "es" => "Spain",
             "cz" => "Чехия",
-            "lt" => "Lithuania"
-
+            "lt" => "Lithuania",
+            "au" => "Australia",
+            "nz" => "New Zealand"
         ];
     }
 }
