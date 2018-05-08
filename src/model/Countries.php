@@ -23,7 +23,8 @@ class Countries {
             "cz" => "Чехия",
             "lt" => "Lithuania",
             "au" => "Australia",
-            "nz" => "New Zealand"
+            "nz" => "New Zealand",
+            "kr" => "Korea"
         ];
     }
 }
