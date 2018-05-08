@@ -24,7 +24,8 @@ class Countries {
             "lt" => "Lithuania",
             "au" => "Australia",
             "nz" => "New Zealand",
-            "kr" => "Korea"
+            "kr" => "Korea",
+            "uk" => "United Kingdom"
         ];
     }
 }
