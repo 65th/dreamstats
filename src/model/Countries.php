@@ -26,7 +26,8 @@ class Countries {
             "nz" => "New Zealand",
             "kr" => "Korea",
             "uk" => "United Kingdom",
-            "pl" => "Poland"
+            "pl" => "Poland",
+            "gr" => "Greece"
         ];
     }
 }
