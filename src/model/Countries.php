@@ -27,7 +27,9 @@ class Countries {
             "kr" => "Korea",
             "uk" => "United Kingdom",
             "pl" => "Poland",
-            "gr" => "Greece"
+            "gr" => "Greece",
+            "fi" => "Finland",
+            "be" => "Belgium"
         ];
     }
 }
