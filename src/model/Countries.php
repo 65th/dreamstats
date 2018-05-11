@@ -33,7 +33,8 @@ class Countries {
             "pe" => "Peru",
             "cn" => "China",
             "bg" => "Bulgaria",
-            "br" => "Brazilia"
+            "br" => "Brazilia",
+            "sg" => "Singapore"
         ];
     }
 }
