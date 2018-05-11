@@ -29,7 +29,8 @@ class Countries {
             "pl" => "Poland",
             "gr" => "Greece",
             "fi" => "Finland",
-            "be" => "Belgium"
+            "be" => "Belgium",
+            "pe" => "Peru"
         ];
     }
 }
