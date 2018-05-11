@@ -30,7 +30,9 @@ class Countries {
             "gr" => "Greece",
             "fi" => "Finland",
             "be" => "Belgium",
-            "pe" => "Peru"
+            "pe" => "Peru",
+            "cn" => "China",
+            "bg" => "Bulgaria"
         ];
     }
 }
