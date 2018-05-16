@@ -36,7 +36,8 @@ class Countries {
             "br" => "Brazilia",
             "sg" => "Singapore",
             "nl" => "Netherlands",
-            "at" => "Austria"
+            "at" => "Austria",
+            "rs" => "Serbia"
         ];
     }
 }
