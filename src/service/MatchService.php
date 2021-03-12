@@ -1,7 +1,7 @@
 <?php
 
 class MatchService extends PdoService {
-    public function insert(Match $xxx) {
+    public function insert(TheMatch $xxx) {
         $statement = $this->pdo->prepare("INSERT INTO solo_match (player_id, enemy_id, event_id, player_wins, enemy_wins)
                                           VALUES (:playerId, :enemyId, :eventId, :playerWins, :enemyWins)");
         $statement->execute([
@@ -15,7 +15,7 @@ class MatchService extends PdoService {
         return $this->pdo->lastInsertId("solo_match_id_seq");
     }
 
-    public function update(Match $matchx) {
+    public function update(TheMatch $matchx) {
         $statement = $this->pdo->prepare("UPDATE solo_match SET player_id = :playerId, enemy_id = :enemyId,
                                           event_id = :eventId, player_wins = :playerWins, enemy_wins = :enemyWins
                                           WHERE id = :id");
@@ -61,7 +61,7 @@ class MatchService extends PdoService {
         $matches = [];
         $result = $statement->fetchAll();
         foreach ($result as $row) {
-            $matchx = new Match();
+            $matchx = new TheMatch();
             $matchx->id = $row['id'];
             if ($row['player_id'] == $mainPlayer->id) {
                 $matchx->player = $this->extractPlayer($row, "player_");

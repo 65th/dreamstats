@@ -62,7 +62,7 @@ class MatchController extends DefaultController {
         if ($forbidden) return $forbidden;
 
         $data = $req->getParsedBody();
-        $matchx = new Match();
+        $matchx = new TheMatch();
         $matchx->id = !empty($data['id']) ? $data['id'] : null;
         $matchx->player = $this->playerService->findById($data['player']);
         $matchx->enemy = $this->playerService->findById($data['enemy']);

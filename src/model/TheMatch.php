@@ -1,6 +1,6 @@
 <?php
 
-class Match {
+class TheMatch {
     /**
      * @var int
      */

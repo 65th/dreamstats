@@ -3,13 +3,13 @@
 class Statistics {
 
     /**
-     * @var Match[]
+     * @var TheMatch[]
      */
     private $matches;
 
     /**
      * Statistics constructor.
-     * @param Match[] $matches
+     * @param TheMatch[] $matches
      */
     public function __construct($matches) {
         $this->matches = $matches;
