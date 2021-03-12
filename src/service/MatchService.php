@@ -1,15 +1,15 @@
 <?php
 
 class MatchService extends PdoService {
-    public function insert(Match $matchx) {
+    public function insert(Match $xxx) {
         $statement = $this->pdo->prepare("INSERT INTO solo_match (player_id, enemy_id, event_id, player_wins, enemy_wins)
                                           VALUES (:playerId, :enemyId, :eventId, :playerWins, :enemyWins)");
         $statement->execute([
-            ":playerId" => $matchx->player->id,
-            ":enemyId" => $matchx->enemy->id,
-            ":eventId" => $matchx->event->id,
-            ":playerWins" => $matchx->score->wins,
-            ":enemyWins" => $matchx->score->loses
+            ":playerId" => $xxx->player->id,
+            ":enemyId" => $xxx->enemy->id,
+            ":eventId" => $xxx->event->id,
+            ":playerWins" => $xxx->score->wins,
+            ":enemyWins" => $xxx->score->loses
         ]);
 
         return $this->pdo->lastInsertId("solo_match_id_seq");
