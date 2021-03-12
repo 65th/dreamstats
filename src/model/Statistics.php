@@ -39,17 +39,17 @@ class Statistics {
             "maps" => new Score(0, 0)
         ];
 
-        foreach ($this->matches as $match) {
-            $score = $match->score;
+        foreach ($this->matches as $matchx) {
+            $score = $matchx->score;
             $statistics['maps']->wins += $score->wins;
             $statistics['maps']->loses += $score->loses;
-            $statistics['byRace'][$match->enemy->race]['maps']->wins += $score->wins;
-            $statistics['byRace'][$match->enemy->race]['maps']->loses += $score->loses;
+            $statistics['byRace'][$matchx->enemy->race]['maps']->wins += $score->wins;
+            $statistics['byRace'][$matchx->enemy->race]['maps']->loses += $score->loses;
             if ($score->wins > $score->loses) {
-                $statistics['byRace'][$match->enemy->race]['total']->wins++;
+                $statistics['byRace'][$matchx->enemy->race]['total']->wins++;
                 $statistics['total']->wins++;
             } elseif ($score->wins < $score->loses) {
-                $statistics['byRace'][$match->enemy->race]['total']->loses++;
+                $statistics['byRace'][$matchx->enemy->race]['total']->loses++;
                 $statistics['total']->loses++;
             }
         }

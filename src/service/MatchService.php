@@ -1,31 +1,31 @@
 <?php
 
 class MatchService extends PdoService {
-    public function insert(Match $match) {
+    public function insert(Match $matchx) {
         $statement = $this->pdo->prepare("INSERT INTO solo_match (player_id, enemy_id, event_id, player_wins, enemy_wins)
                                           VALUES (:playerId, :enemyId, :eventId, :playerWins, :enemyWins)");
         $statement->execute([
-            ":playerId" => $match->player->id,
-            ":enemyId" => $match->enemy->id,
-            ":eventId" => $match->event->id,
-            ":playerWins" => $match->score->wins,
-            ":enemyWins" => $match->score->loses
+            ":playerId" => $matchx->player->id,
+            ":enemyId" => $matchx->enemy->id,
+            ":eventId" => $matchx->event->id,
+            ":playerWins" => $matchx->score->wins,
+            ":enemyWins" => $matchx->score->loses
         ]);
 
         return $this->pdo->lastInsertId("solo_match_id_seq");
     }
 
-    public function update(Match $match) {
+    public function update(Match $matchx) {
         $statement = $this->pdo->prepare("UPDATE solo_match SET player_id = :playerId, enemy_id = :enemyId,
                                           event_id = :eventId, player_wins = :playerWins, enemy_wins = :enemyWins
                                           WHERE id = :id");
         $statement->execute([
-            ":id" => $match->id,
-            ":playerId" => $match->player->id,
-            ":enemyId" => $match->enemy->id,
-            ":eventId" => $match->event->id,
-            ":playerWins" => $match->score->wins,
-            ":enemyWins" => $match->score->loses
+            ":id" => $matchx->id,
+            ":playerId" => $matchx->player->id,
+            ":enemyId" => $matchx->enemy->id,
+            ":eventId" => $matchx->event->id,
+            ":playerWins" => $matchx->score->wins,
+            ":enemyWins" => $matchx->score->loses
         ]);
     }
 
@@ -61,22 +61,22 @@ class MatchService extends PdoService {
         $matches = [];
         $result = $statement->fetchAll();
         foreach ($result as $row) {
-            $match = new Match();
-            $match->id = $row['id'];
+            $matchx = new Match();
+            $matchx->id = $row['id'];
             if ($row['player_id'] == $mainPlayer->id) {
-                $match->player = $this->extractPlayer($row, "player_");
-                $match->enemy = $this->extractPlayer($row, "enemy_");
-                $match->score = new Score($row['player_wins'], $row['enemy_wins']);
+                $matchx->player = $this->extractPlayer($row, "player_");
+                $matchx->enemy = $this->extractPlayer($row, "enemy_");
+                $matchx->score = new Score($row['player_wins'], $row['enemy_wins']);
             } else {
-                $match->player = $this->extractPlayer($row, "enemy_");
-                $match->enemy = $this->extractPlayer($row, "player_");
-                $match->score = new Score($row['enemy_wins'], $row['player_wins']);
+                $matchx->player = $this->extractPlayer($row, "enemy_");
+                $matchx->enemy = $this->extractPlayer($row, "player_");
+                $matchx->score = new Score($row['enemy_wins'], $row['player_wins']);
             }
-            $match->event = new Event();
-            $match->event->id = $row['event_id'];
-            $match->event->name = $row['event_name'];
-            $match->event->date = $row['event_date'];
-            $matches[] = $match;
+            $matchx->event = new Event();
+            $matchx->event->id = $row['event_id'];
+            $matchx->event->name = $row['event_name'];
+            $matchx->event->date = $row['event_date'];
+            $matches[] = $matchx;
         }
 
         return $matches;
