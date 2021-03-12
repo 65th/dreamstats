@@ -2,13 +2,6 @@
 
 if ($_SERVER['SERVER_NAME'] !== "localhost") {
     header('Strict-Transport-Security:max-age=31536000;');
-    if (empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] === "off") {
-        pre_print_r($_SERVER);
-//        $location = 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-//        header('HTTP/1.1 301 Moved Permanently');
-//        header('Location: ' . $location);
-        exit;
-    }
 }
 
 require_once __DIR__ . '/../vendor/autoload.php';
