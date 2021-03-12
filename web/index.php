@@ -1,5 +1,15 @@
 <?php
 
+if ($_SERVER['SERVER_NAME'] !== "localhost") {
+    header('Strict-Transport-Security:max-age=31536000;');
+    if (!isSecure()) {
+        $location = 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+        header('HTTP/1.1 301 Moved Permanently');
+        header('Location: ' . $location);
+        exit;
+    }
+}
+
 require_once __DIR__ . '/../vendor/autoload.php';
 spl_autoload_register(function ($classname) {
     $path = __DIR__ . "/../src/model/" . $classname . ".php";
@@ -73,4 +83,10 @@ function pre_print_r($x) {
     echo "<pre>";
     print_r($x);
     echo "</pre>";
+}
+
+function isSecure() {
+    return
+        (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+        || $_SERVER['SERVER_PORT'] == 443;
 }
