@@ -12,5 +12,7 @@ class Score
         $this->loses = $loses;
     }
 
-
+    public function isZatasheno() {
+        return $this->wins > $this->loses;
+    }
 }

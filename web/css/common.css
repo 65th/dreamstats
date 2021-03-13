@@ -25,3 +25,12 @@ nav {
 .sortable-table th {
     cursor: pointer;
 }
+
+.at-details-table {
+    margin: 10px;
+}
+
+.at-details-table tr, .at-details-table td {
+    background-color: #ffffff;
+    border: none;
+}

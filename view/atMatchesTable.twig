@@ -1,0 +1,58 @@
+{% import 'macro/playerMacro.twig' as pm %}
+<table class="my-table table-bordered table-striped">
+    {% for atMatch in atMatches %}
+        {% set score = atMatch.calcScore() %}
+        {% set firstGame = atMatch.games[0] %}
+        <tr>
+            <td class="{{ score.isZatasheno() ? 'winner' }}">{{ pm.playerWithRace(atMatch.player1, firstGame.p1Race, true) }}</td>
+            <td class="{{ score.isZatasheno() ? 'winner' }}">{{ pm.playerWithRace(atMatch.player2, firstGame.p2Race, true) }}</td>
+            <td>{{ score.wins }}:{{ score.loses }}</td>
+            <td class="{{ not score.isZatasheno() ? 'winner' }}">{{ pm.playerWithRace(atMatch.opponent1, firstGame.op1Race, true) }}</td>
+            <td class="{{ not score.isZatasheno() ? 'winner' }}">{{ pm.playerWithRace(atMatch.opponent2, firstGame.op2Race, true) }}</td>
+            <td>{{ atMatch.event.name }}</td>
+            <td>
+                <button class="at-details-btn btn btn-sm btn-primary">Details</button>
+                {% if currentUser.admin %}
+                    <button class="btn btn-danger btn-sm btn-delete-match" data-match-id="{{ atMatch.id }}">Delete</button>
+                {% endif %}
+            </td>
+        </tr>
+        <tr style="display: none;">
+            <td colspan="7">
+                <table class="at-details-table">
+                    {% for game in atMatch.games %}
+                        <tr>
+                            <td class="{{ game.win ? 'winner' }}">{{ pm.playerWithRace(atMatch.player1, game.p1Race) }}</td>
+                            <td class="{{ game.win ? 'winner' }}">{{ pm.playerWithRace(atMatch.player2, game.p2Race) }}</td>
+                            <td>{{ game.win ? '>' : '<' }}</td>
+                            <td class="{{ not game.win ? 'winner' }}">{{ pm.playerWithRace(atMatch.opponent1, game.op1Race) }}</td>
+                            <td class="{{ not game.win ? 'winner' }}">{{ pm.playerWithRace(atMatch.opponent2, game.op2Race) }}</td>
+                            <td>@ {{ game.map }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+<script>
+    $('.at-details-btn').click(function () {
+        $(this).parents('tr').next().toggle();
+    });
+    $('.btn-delete-match').click(async function() {
+        const yes = confirm("Confirm deleting?");
+        if (yes) {
+            const id = $(this).data('match-id');
+            try {
+                await $.ajax({
+                    method: 'DELETE',
+                    url: `/at/${id}`
+                });
+                location.reload();
+            } catch (e) {
+                alert('Error while deleting');
+                console.error(e);
+            }
+        }
+    });
+</script>

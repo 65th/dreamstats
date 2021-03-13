@@ -4,11 +4,12 @@ namespace Dreamstats\Controller;
 
 use Dreamstats\Model\User;
 use Psr\Http\Message\ResponseInterface as Response;
+use Slim\Views\Twig;
 
 abstract class DefaultController
 {
     /**
-     * @var \Slim\Views\Twig
+     * @var Twig
      */
     protected $view;
     protected $options;

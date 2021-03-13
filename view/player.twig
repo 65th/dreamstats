@@ -9,26 +9,7 @@
 {% import 'macro/playerMacro.twig' as pm %}
 
 <div class="container">
-    <div class="row my-row">
-        <div class="col-md-12">
-            <div>
-                {{ pm.player(player) }}
-                {% if currentUser.admin %}
-                    <a class="btn btn-warning btn-sm" href="/player/{{ player.id }}/edit">Edit</a>
-                {% endif %}
-            </div>
-        </div>
-    </div>
-    <div class="row my-row">
-        <div class="col-md-12">
-            <a class="btn btn-primary btn-sm" id="check-stats" target="_blank">Check stats vs:</a>
-            <select id="vs">
-                {% for player in dreamsPlayers %}
-                    <option value="{{ player.id }}">{{ player.nickname }}</option>
-                {% endfor %}
-            </select>
-        </div>
-    </div>
+    {% include 'playerHeader.twig' %}
     <div class="row my-row">
         <div class="col-sm-12">
             <table class="my-table table-bordered table-striped">

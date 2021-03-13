@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Dreamstats AT</title>
+    {% include 'commonHeader.twig' %}
+    <script src="/js/jquery.tablesorter/jquery.tablesorter.js"></script>
+</head>
+<body>
+{% include 'navbar.twig' %}
+{% import 'macro/playerMacro.twig' as pm %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            {% include 'atMatchesTable.twig' %}
+        </div>
+    </div>
+</div>
+</body>
+</html>

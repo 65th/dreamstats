@@ -1,4 +1,15 @@
 {% macro player(player) %}
-    <img src="/img/flag/{{ player.country }}.png"> <img src="/img/race/{{ player.race }}.gif"> <a
-        href="/player/{{ player.id }}">{{ player.nickname }}</a>
+    <img src="/img/flag/{{ player.country }}.png">
+    <img src="/img/race/{{ player.race }}.gif">
+    <a href="/player/{{ player.id }}">{{ player.nickname }}</a>
+{% endmacro %}
+
+{% macro playerWithRace(player, race, withLink) %}
+    <img src="/img/flag/{{ player.country }}.png">
+    <img src="/img/race/{{ race }}.gif">
+    {% if withLink %}
+        <a href="/player/{{ player.id }}/at">{{ player.nickname }}</a>
+    {% else %}
+        <span>{{ player.nickname }}</span>
+    {% endif %}
 {% endmacro %}

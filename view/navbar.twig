@@ -7,12 +7,21 @@
     <a class="navbar-brand" href="/"><img src="/img/logo.png"></a>
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="nav navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/">Solo</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/at">AT</a>
+            </li>
             {% if currentUser.admin %}
-                <li class="nav-item">
+                <li class="nav-item ml-4">
                     <a class="nav-link" href="/player/new">Add Player</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/match/new">Add Match</a>
+                    <a class="nav-link" href="/match/new">Add Solo Match</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/at/new">Add AT Match</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/event/new">Add Event</a>

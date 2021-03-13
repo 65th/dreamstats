@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>New AT</title>
+    {% include 'commonHeader.twig' %}
+    <style>
+        #at-game-template {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+{% include 'navbar.twig' %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <form class="form-inline" id="at-match" method="POST">
+                {% if atMatch %}
+                    <input type="hidden" class="id" name="id" value="{{ atMatch.id }}">
+                {% endif %}
+                <select class="form-control mr-sm-2" id="player1" name="player1">
+                    {% for player in players if player.isFromDreams or atMatch.player1.id == player.id %}
+                        <option value="{{ player.id }}" {{ atMatch.player1.id == player.id ? "selected" }}>{{ player.nickname }}</option>
+                    {% endfor %}
+                </select>
+                <select class="form-control mr-sm-2" id="player2" name="player2">
+                    {% for player in players if player.isFromDreams or atMatch.player2.id == player.id %}
+                        <option value="{{ player.id }}" {{ atMatch.player2.id == player.id ? "selected" }}>{{ player.nickname }}</option>
+                    {% endfor %}
+                </select>
+                <strong class="mr-sm-2">vs</strong>
+                <select class="form-control mr-sm-2" id="opponent1" name="opponent1">
+                    {% for player in players %}
+                        <option value="{{ player.id }}" {{ atMatch.opponent1.id == player.id ? "selected" }}>{{ player.nickname }}</option>
+                    {% endfor %}
+                </select>
+                <select class="form-control mr-sm-2" id="opponent2" name="opponent2">
+                    {% for player in players %}
+                        <option value="{{ player.id }}" {{ atMatch.opponent2.id == player.id ? "selected" }}>{{ player.nickname }}</option>
+                    {% endfor %}
+                </select>
+                <select class="form-control mr-sm-2" id="event" name="event">
+                    {% for event in events %}
+                        <option value="{{ event.id }}" {{ atMatch.event.id == event.id ? "selected" }}>{{ event.name }}</option>
+                    {% endfor %}
+                </select>
+                <button id="post-btn" type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+    <div class="row" id="games">
+        <div class="col-sm-12">
+            <h4>Games:</h4>
+            <div id="games-wrapper" class="mb-4"></div>
+            <button class="btn btn-success" id="add-game-btn">Add more</button>
+        </div>
+    </div>
+    <div id="at-game-template">
+        <div class="row game mb-2">
+            <div class="col-sm-12">
+                <form class="form-inline">
+                    {{ _self.selectRace('player1-race') }}
+                    {{ _self.selectRace('player2-race') }}
+                    <strong class="mr-2">vs</strong>
+                    {{ _self.selectRace('opponent1-race') }}
+                    {{ _self.selectRace('opponent2-race') }}
+                    <input class="form-control map mr-2" placeholder="Map">
+                    <div class="form-check form-check-inline mr-2">
+                        <label class="form-check-label">
+                            <input class="form-check-input win" type="checkbox" value="1">
+                            Win?
+                        </label>
+                    </div>
+                    <div class="btn btn-danger btn-delete-dame">Delete</div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function addGame() {
+        const game = $('#at-game-template > .game').clone();
+        $('#games-wrapper').append(game);
+    }
+
+    addGame();
+    $('#add-game-btn').click(() => addGame());
+    $('#post-btn').click(async function (e) {
+        e.preventDefault();
+        const games = [];
+        $('#games-wrapper .game').each(function () {
+            games.push({
+                player1Race: $(this).find('.player1-race').val(),
+                player2Race: $(this).find('.player2-race').val(),
+                opponent1Race: $(this).find('.opponent1-race').val(),
+                opponent2Race: $(this).find('.opponent2-race').val(),
+                map: $(this).find('.map').val(),
+                win: $(this).find('.win').is(':checked')
+            });
+        });
+        const atMatch = {
+            player1Id: $('#player1').val(),
+            player2Id: $('#player2').val(),
+            opponent1Id: $('#opponent1').val(),
+            opponent2Id: $('#opponent2').val(),
+            eventId: $('#event').val(),
+            games
+        };
+
+        $('button, input, select').prop('disabled', true);
+        try {
+            const response = await $.ajax({
+                url: '/at/register',
+                data: atMatch,
+                dataType: 'json',
+                method: 'post'
+            });
+            if (response.id) {
+                location.reload();
+            } else {
+                console.error(response);
+                alert("Response did not return any id: " + JSON.stringify(response));
+            }
+        } catch (e) {
+            console.error(e);
+            alert(e);
+        }
+    });
+
+    $(document).on('click', '.btn-delete-dame', function () {
+        $(this).parents('.game').remove();
+    });
+</script>
+</body>
+</html>
+{% macro selectRace(cssClass, selectedRace) %}
+    <select class="form-control mr-sm-2 {{ cssClass }}" name="race">
+        <option value="h" {{ selectedRace == "h" ? "selected" }}>Human</option>
+        <option value="o" {{ selectedRace == "o" ? "selected" }}>Orc</option>
+        <option value="u" {{ selectedRace == "u" ? "selected" }}>Undead</option>
+        <option value="n" {{ selectedRace == "n" ? "selected" }}>Night Elf</option>
+    </select>
+{% endmacro %}

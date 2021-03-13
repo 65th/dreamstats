@@ -1,10 +1,12 @@
 <?php
 
+use Dreamstats\Controller\ATMatchController;
 use Dreamstats\Controller\EventController;
 use Dreamstats\Controller\IndexController;
 use Dreamstats\Controller\LoginController;
 use Dreamstats\Controller\MatchController;
 use Dreamstats\Controller\PlayerController;
+use Dreamstats\Service\ATMatchService;
 use Dreamstats\Service\EventService;
 use Dreamstats\Service\MatchService;
 use Dreamstats\Service\PlayerService;
@@ -51,17 +53,27 @@ $container['eventService'] = function () use ($container) {
 $container['matchService'] = function () use ($container) {
     return new MatchService($container['pdo']);
 };
+$container['atMatchService'] = function () use ($container) {
+    return new ATMatchService($container['pdo']);
+};
 
 $app->get("/", IndexController::class . ":index");
+
+$app->get('/at/new', ATMatchController::class . ':showAtMatchForm');
+$app->post('/at/register', ATMatchController::class . ':registerNewATMatch');
+$app->get('/at', ATMatchController::class . ":showAllAt");
+$app->delete('/at/{id}', ATMatchController::class . ':deleteAtMatch');
 
 $app->get("/player/new", PlayerController::class . ":showRegisterForm");
 $app->post("/player/new", PlayerController::class . ":register");
 $app->get("/player/{playerId}/vs/{enemyId}", PlayerController::class . ":compare");
 $app->get("/player/{id}/edit", PlayerController::class . ":showEditForm");
+$app->get("/player/{id}/at", ATMatchController::class . ":showPlayerATMatches");
 $app->get("/player/{id}", PlayerController::class . ":show");
 
 $app->get("/event/new", EventController::class . ":showRegisterPage");
 $app->post("/event/new", EventController::class . ":register");
+$app->get("/event/{id}", EventController::class . ":show");
 
 $app->get("/match/new", MatchController::class . ":showRegisterForm");
 $app->post("/api/match", MatchController::class . ":registerApi");
