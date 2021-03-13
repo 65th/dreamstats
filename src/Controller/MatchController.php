@@ -1,8 +1,17 @@
 <?php
+
+namespace Dreamstats\Controller;
+
+use Dreamstats\Model\Score;
+use Dreamstats\Model\TheMatch;
+use Dreamstats\Service\EventService;
+use Dreamstats\Service\MatchService;
+use Dreamstats\Service\PlayerService;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
-class MatchController extends DefaultController {
+class MatchController extends DefaultController
+{
     /**
      * @var PlayerService
      */
@@ -16,14 +25,16 @@ class MatchController extends DefaultController {
      */
     private $matchService;
 
-    public function __construct($container) {
+    public function __construct($container)
+    {
         parent::__construct($container);
         $this->playerService = $container['playerService'];
         $this->eventService = $container['eventService'];
         $this->matchService = $container['matchService'];
     }
 
-    public function showRegisterForm(Request $req, Response $res) {
+    public function showRegisterForm(Request $req, Response $res)
+    {
         $forbidden = $this->forbidIfNotAdmin($res);
         if ($forbidden) return $forbidden;
 
@@ -38,7 +49,8 @@ class MatchController extends DefaultController {
         return $this->render($res, 'matchNew.twig');
     }
 
-    public function showEditForm(Request $req, Response $res) {
+    public function showEditForm(Request $req, Response $res)
+    {
         $forbidden = $this->forbidIfNotAdmin($res);
         if ($forbidden) return $forbidden;
 
@@ -57,7 +69,8 @@ class MatchController extends DefaultController {
         return $this->render($res, 'matchNew.twig');
     }
 
-    public function registerApi(Request $req, Response $res) {
+    public function registerApi(Request $req, Response $res)
+    {
         $forbidden = $this->forbidIfNotAdmin($res);
         if ($forbidden) return $forbidden;
 

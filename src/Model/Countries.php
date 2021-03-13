@@ -1,6 +1,11 @@
 <?php
-class Countries {
-    public static function all() {
+
+namespace Dreamstats\Model;
+
+class Countries
+{
+    public static function all()
+    {
         return [
             "ru" => "Russia",
             "ee" => "Estonia",

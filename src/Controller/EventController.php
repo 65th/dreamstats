@@ -1,31 +1,41 @@
 <?php
-use \Psr\Http\Message\ServerRequestInterface as Request;
-use \Psr\Http\Message\ResponseInterface as Response;
 
-class EventController extends DefaultController {
+namespace Dreamstats\Controller;
+
+use Dreamstats\Model\Event;
+use Dreamstats\Service\EventService;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+
+class EventController extends DefaultController
+{
 
     /**
      * @var EventService
      */
     private $eventService;
 
-    public function __construct($container) {
+    public function __construct($container)
+    {
         parent::__construct($container);
         $this->eventService = $container['eventService'];
     }
 
-    public function show(Request $req, Response $res) {
+    public function show(Request $req, Response $res)
+    {
 
     }
 
-    public function showRegisterPage(Request $req, Response $res) {
+    public function showRegisterPage(Request $req, Response $res)
+    {
         $forbidden = $this->forbidIfNotAdmin($res);
         if ($forbidden) return $forbidden;
 
         return $this->render($res, 'eventRegister.twig');
     }
 
-    public function register(Request $req, Response $res) {
+    public function register(Request $req, Response $res)
+    {
         $forbidden = $this->forbidIfNotAdmin($res);
         if ($forbidden) return $forbidden;
 

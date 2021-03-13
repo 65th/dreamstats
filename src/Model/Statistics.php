@@ -1,6 +1,8 @@
 <?php
 
-class Statistics {
+namespace Dreamstats\Model;
+class Statistics
+{
 
     /**
      * @var TheMatch[]
@@ -11,11 +13,13 @@ class Statistics {
      * Statistics constructor.
      * @param TheMatch[] $matches
      */
-    public function __construct($matches) {
+    public function __construct($matches)
+    {
         $this->matches = $matches;
     }
 
-    public function get() {
+    public function get()
+    {
         $statistics = [
             "byRace" => [
                 "h" => [

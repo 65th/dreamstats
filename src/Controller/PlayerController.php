@@ -1,8 +1,17 @@
 <?php
+
+namespace Dreamstats\Controller;
+
+use Dreamstats\Model\Countries;
+use Dreamstats\Model\Player;
+use Dreamstats\Model\Statistics;
+use Dreamstats\Service\MatchService;
+use Dreamstats\Service\PlayerService;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
-class PlayerController extends DefaultController {
+class PlayerController extends DefaultController
+{
     /**
      * @var PlayerService
      */
@@ -13,13 +22,15 @@ class PlayerController extends DefaultController {
     private $matchService;
 
 
-    public function __construct($container) {
+    public function __construct($container)
+    {
         parent::__construct($container);
         $this->playerService = $container['playerService'];
         $this->matchService = $container['matchService'];
     }
 
-    public function show(Request $req, Response $res) {
+    public function show(Request $req, Response $res)
+    {
         $id = $req->getAttribute('id');
         $player = $this->playerService->findById($id);
         $matches = $this->matchService->findByPlayer($player);
@@ -32,26 +43,29 @@ class PlayerController extends DefaultController {
         return $this->render($res, 'player.twig');
     }
 
-    public function showRegisterForm(Request $req, Response $res) {
+    public function showRegisterForm(Request $req, Response $res)
+    {
         $forbidden = $this->forbidIfNotAdmin($res);
         if ($forbidden) return $forbidden;
 
-        $this->options += ['countries' =>  Countries::all()];
+        $this->options += ['countries' => Countries::all()];
         return $this->render($res, 'playerRegister.twig');
     }
 
-    public function showEditForm(Request $req, Response $res) {
+    public function showEditForm(Request $req, Response $res)
+    {
         $forbidden = $this->forbidIfNotAdmin($res);
         if ($forbidden) return $forbidden;
 
         $id = $req->getAttribute('id');
         $player = $this->playerService->findById($id);
-        $this->options += ['player' => $player, 'countries' =>  Countries::all()];
+        $this->options += ['player' => $player, 'countries' => Countries::all()];
 
         return $this->render($res, 'playerRegister.twig');
     }
 
-    public function register(Request $req, Response $res) {
+    public function register(Request $req, Response $res)
+    {
         $forbidden = $this->forbidIfNotAdmin($res);
         if ($forbidden) return $forbidden;
 
@@ -74,7 +88,8 @@ class PlayerController extends DefaultController {
         return $res->withRedirect("/player/$player->id/edit");
     }
 
-    public function compare(Request $req, Response $res) {
+    public function compare(Request $req, Response $res)
+    {
         $player = $this->playerService->findById($req->getAttribute("playerId"));
         $enemy = $this->playerService->findById($req->getAttribute("enemyId"));
         $matches = $this->matchService->findByPlayers($player, $enemy);

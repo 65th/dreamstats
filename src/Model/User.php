@@ -1,11 +1,13 @@
 <?php
 
-class User {
+namespace Dreamstats\Model;
+class User
+{
 
     public static $users = [
         'Awake' => [
             'username' => 'Awake',
-            'password' => '$2y$10$yyUtJmu1roaSWr0RxBVU.u4MdXW/npn40X2YCTKqQ.XI7zLdRsHqe',
+            'password' => '$2y$12$DgNH9l1VBn/7gVXTGEtCXeTKoo3piylEdcBgqoJeMBMwlJiiZVCP2',
             'admin' => true
         ]
     ];
@@ -24,7 +26,8 @@ class User {
      * @param $admin
      * @param $authorized
      */
-    public function __construct($username, $password, $admin, $authorized) {
+    public function __construct($username, $password, $admin, $authorized)
+    {
         $this->username = $username;
         $this->password = $password;
         $this->admin = $admin;
@@ -32,7 +35,8 @@ class User {
     }
 
 
-    public static function getCurrentUser() {
+    public static function getCurrentUser()
+    {
         if (!self::$currentUser) {
             $username = isset($_SESSION['username']) ? $_SESSION['username'] : null;
             $password = isset($_SESSION['password']) ? $_SESSION['password'] : null;

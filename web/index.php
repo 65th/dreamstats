@@ -1,20 +1,21 @@
 <?php
 
+use Dreamstats\Controller\EventController;
+use Dreamstats\Controller\IndexController;
+use Dreamstats\Controller\LoginController;
+use Dreamstats\Controller\MatchController;
+use Dreamstats\Controller\PlayerController;
+use Dreamstats\Service\EventService;
+use Dreamstats\Service\MatchService;
+use Dreamstats\Service\PlayerService;
+use Slim\App;
+use Slim\Views\Twig;
+use Slim\Views\TwigExtension;
+
 if ($_SERVER['SERVER_NAME'] !== "localhost") {
     header('Strict-Transport-Security:max-age=31536000;');
 }
-
 require_once __DIR__ . '/../vendor/autoload.php';
-spl_autoload_register(function ($classname) {
-    $path = __DIR__ . "/../src/model/" . $classname . ".php";
-    if (file_exists($path)) {
-        require_once $path;
-    } elseif (file_exists(__DIR__ . "/../src/service/" . $classname . ".php")) {
-        require_once __DIR__ . "/../src/service/" . $classname . ".php";
-    } else {
-        require_once(__DIR__ . "/../src/controller/" . $classname . ".php");
-    }
-});
 
 $dbSettings = parse_url(getenv('DATABASE_URL'));
 
@@ -22,7 +23,7 @@ $config = [
     'displayErrorDetails' => $_SERVER['SERVER_NAME'] === "localhost"
 ];
 
-$app = new \Slim\App(['settings' => $config]);
+$app = new App(['settings' => $config]);
 $container = $app->getContainer();
 $container['pdo'] = function () {
     $pdo = new PDO(sprintf("pgsql:host=%s;port=%d;dbname=%s;user=%s;password=%s",
@@ -34,9 +35,9 @@ $container['pdo'] = function () {
 };
 
 $container['view'] = function ($container) {
-    $view = new \Slim\Views\Twig(__DIR__ . '/../src/view', ['cache' => false]);
+    $view = new Twig(__DIR__ . '/../view', ['cache' => false]);
     $basePath = rtrim(str_ireplace('index.php', '', $container['request']->getUri()->getBasePath()), '/');
-    $view->addExtension(new Slim\Views\TwigExtension($container['router'], $basePath));
+    $view->addExtension(new TwigExtension($container['router'], $basePath));
 
     return $view;
 };
@@ -73,7 +74,8 @@ $app->post("/logout", LoginController::class . ":logout");
 session_start();
 $app->run();
 
-function pre_print_r($x) {
+function pre_print_r($x)
+{
     echo "<pre>";
     print_r($x);
     echo "</pre>";

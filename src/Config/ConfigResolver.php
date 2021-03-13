@@ -1,7 +1,10 @@
 <?php
 
-class ConfigResolver {
-    public static function resolve() {
+namespace Dreamstats\Config;
+class ConfigResolver
+{
+    public static function resolve()
+    {
 
         return [
             "host" => "",

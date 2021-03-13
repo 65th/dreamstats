@@ -1,11 +1,17 @@
 <?php
 
-class PlayerService extends PdoService {
+namespace Dreamstats\Service;
+
+use Dreamstats\Model\Player;
+
+class PlayerService extends PdoService
+{
     /**
      * @param $onlyFromDreams
      * @return Player[]
      */
-    public function findAll($onlyFromDreams = false) {
+    public function findAll($onlyFromDreams = false)
+    {
         $sql = "SELECT * FROM player";
         if ($onlyFromDreams) {
             $sql .= " WHERE is_from_dreams = TRUE";
@@ -21,7 +27,8 @@ class PlayerService extends PdoService {
         return $players;
     }
 
-    public function findById($id) {
+    public function findById($id)
+    {
         $sql = "SELECT * FROM player WHERE id = :id";
         $statement = $this->pdo->prepare($sql);
         $statement->execute([':id' => $id]);
@@ -38,7 +45,8 @@ class PlayerService extends PdoService {
         return $player;
     }
 
-    public function insert(Player $player) {
+    public function insert(Player $player)
+    {
         $sql = "INSERT INTO player (nickname, race, country, is_from_dreams)
                 VALUES (:nickname, :race, :country, :isFromDreams)";
         $this->pdo->prepare($sql)->execute($this->resolvePlayerOptions($player));
@@ -46,14 +54,16 @@ class PlayerService extends PdoService {
         $player->id = $this->pdo->lastInsertId("player_id_seq");
     }
 
-    public function update(Player $player) {
+    public function update(Player $player)
+    {
         $sql = "UPDATE player SET nickname = :nickname, race = :race, country = :country, is_from_dreams = :isFromDreams
                 WHERE id = :id";
         $this->pdo->prepare($sql)->execute($this->resolvePlayerOptions($player));
     }
 
-    private function resolvePlayerOptions(Player $player) {
-        $options =  [
+    private function resolvePlayerOptions(Player $player)
+    {
+        $options = [
             ":nickname" => $player->nickname,
             ":race" => $player->race,
             ":country" => $player->country,

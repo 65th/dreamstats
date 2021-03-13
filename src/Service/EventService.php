@@ -1,12 +1,18 @@
 <?php
 
-class EventService extends PdoService {
-    public function insert(Event $event) {
+namespace Dreamstats\Service;
+use Dreamstats\Model\Event;
+
+class EventService extends PdoService
+{
+    public function insert(Event $event)
+    {
         $statement = $this->pdo->prepare("INSERT INTO event (name, date) VALUES (:name, :date)");
         $statement->execute([':name' => $event->name, ':date' => $event->date]);
     }
 
-    public function findAll() {
+    public function findAll()
+    {
         $query = "SELECT * FROM event ORDER BY id DESC";
         $result = $this->pdo->query($query);
         $events = [];
@@ -21,7 +27,8 @@ class EventService extends PdoService {
         return $events;
     }
 
-    public function findById($id) {
+    public function findById($id)
+    {
         $sql = "SELECT * FROM event WHERE id = :id";
         $statement = $this->pdo->prepare($sql);
         $statement->execute([':id' => $id]);

@@ -1,6 +1,8 @@
 <?php
 
-class Player {
+namespace Dreamstats\Model;
+class Player
+{
     public $id;
     public $nickname;
     public $race;

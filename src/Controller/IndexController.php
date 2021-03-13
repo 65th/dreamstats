@@ -1,8 +1,19 @@
 <?php
-use \Psr\Http\Message\ServerRequestInterface as Request;
-use \Psr\Http\Message\ResponseInterface as Response;
 
-class IndexController extends DefaultController {
+namespace Dreamstats\Controller;
+
+use Dreamstats\Model\Statistics;
+use Dreamstats\Service\MatchService;
+use Dreamstats\Service\PlayerService;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+
+class IndexController extends DefaultController
+{
+
+    public static function hey() {
+        die('hello');
+    }
 
     /**
      * @var PlayerService
@@ -13,14 +24,16 @@ class IndexController extends DefaultController {
      */
     private $matchService;
 
-    public function __construct($container) {
+    public function __construct($container)
+    {
         parent::__construct($container);
         $this->playerService = $container['playerService'];
         $this->matchService = $container['matchService'];
     }
 
 
-    public function index(Request $req, Response $res) {
+    public function index(Request $req, Response $res)
+    {
         $players = $this->playerService->findAll(true);
         foreach ($players as $player) {
             $matches = $this->matchService->findByPlayer($player);

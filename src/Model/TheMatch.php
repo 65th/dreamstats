@@ -1,6 +1,8 @@
 <?php
 
-class TheMatch {
+namespace Dreamstats\Model;
+class TheMatch
+{
     /**
      * @var int
      */
@@ -22,7 +24,8 @@ class TheMatch {
      */
     public $event;
 
-    function __toString() {
+    function __toString()
+    {
         $template = "%s %d:%d %s @ %s";
         return sprintf($template, $this->player->nickname, $this->score->wins, $this->score->loses, $this->enemy->nickname, $this->event);
     }

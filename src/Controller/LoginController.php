@@ -1,10 +1,16 @@
 <?php
-use \Psr\Http\Message\ServerRequestInterface as Request;
-use \Psr\Http\Message\ResponseInterface as Response;
 
-class LoginController extends DefaultController {
+namespace Dreamstats\Controller;
 
-    public function showLoginPage(Request $req, Response $res) {
+use Dreamstats\Model\User;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+
+class LoginController extends DefaultController
+{
+
+    public function showLoginPage(Request $req, Response $res)
+    {
         $message = null;
         if (isset($_SESSION['loginMessage'])) {
             $message = $_SESSION['loginMessage'];
@@ -16,7 +22,8 @@ class LoginController extends DefaultController {
         return $this->render($res, 'login.twig');
     }
 
-    public function login(Request $req, Response $res) {
+    public function login(Request $req, Response $res)
+    {
         $data = $req->getParsedBody();
         $username = $data['username'];
         $password = $data['password'];
@@ -32,7 +39,8 @@ class LoginController extends DefaultController {
         return $res->withRedirect('/login');
     }
 
-    public function logout(Request $req, Response $res) {
+    public function logout(Request $req, Response $res)
+    {
         session_destroy();
         session_start();
         $_SESSION['loginMessage'] = "Logged out";
