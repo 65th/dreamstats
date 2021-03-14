@@ -23,28 +23,31 @@
                         <option value="{{ player.id }}" {{ atMatch.player1.id == player.id ? "selected" }}>{{ player.nickname }}</option>
                     {% endfor %}
                 </select>
+                <span class="mr-sm-2"></span>
                 <select class="form-control mr-sm-2" id="player2" name="player2">
                     {% for player in players if player.isFromDreams or atMatch.player2.id == player.id %}
                         <option value="{{ player.id }}" {{ atMatch.player2.id == player.id ? "selected" }}>{{ player.nickname }}</option>
                     {% endfor %}
                 </select>
-                <strong class="mr-sm-2">vs</strong>
+                <strong class="ml-sm-2 mr-sm-2">vs</strong>
                 <select class="form-control mr-sm-2" id="opponent1" name="opponent1">
                     {% for player in players %}
                         <option value="{{ player.id }}" {{ atMatch.opponent1.id == player.id ? "selected" }}>{{ player.nickname }}</option>
                     {% endfor %}
                 </select>
+                <span class="mr-sm-2"></span>
                 <select class="form-control mr-sm-2" id="opponent2" name="opponent2">
                     {% for player in players %}
                         <option value="{{ player.id }}" {{ atMatch.opponent2.id == player.id ? "selected" }}>{{ player.nickname }}</option>
                     {% endfor %}
                 </select>
+                <span class="mr-sm-2"></span>
                 <select class="form-control mr-sm-2" id="event" name="event">
                     {% for event in events %}
                         <option value="{{ event.id }}" {{ atMatch.event.id == event.id ? "selected" }}>{{ event.name }}</option>
                     {% endfor %}
                 </select>
-                <button id="post-btn" type="submit" class="btn btn-primary">Submit</button>
+                <button id="post-btn" type="submit" class=" ml-sm-2 btn btn-primary">Submit</button>
             </form>
         </div>
     </div>
@@ -130,6 +133,8 @@
     $(document).on('click', '.btn-delete-dame', function () {
         $(this).parents('.game').remove();
     });
+
+    $('#at-match select').select2({theme: 'bootstrap4'});
 </script>
 </body>
 </html>
