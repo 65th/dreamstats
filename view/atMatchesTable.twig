@@ -1,5 +1,5 @@
 {% import 'macro/playerMacro.twig' as pm %}
-<table class="my-table table-bordered table-striped">
+<table class="my-table table-bordered table-striped" style="margin: auto;">
     {% for atMatch in atMatches %}
         {% set score = atMatch.calcScore() %}
         {% set firstGame = atMatch.games[0] %}
