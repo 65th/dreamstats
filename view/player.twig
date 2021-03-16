@@ -34,22 +34,7 @@
     </div>
     <div class="row my-row">
         <div class="col-md-12">
-            <table class="my-table table-bordered table-striped">
-                {% for match in matches %}
-                    <tr>
-                        <td class="{{ match.score.wins > match.score.loses ? "winner" }}">{{ pm.player(match.player) }}</td>
-                        <td>{{ match.score.wins }} - {{ match.score.loses }}</td>
-                        <td class="{{ match.score.wins < match.score.loses ? "winner" }}">{{ pm.player(match.enemy) }}</td>
-                        <td>{{ match.event.name }}</td>
-                        <td>{{ match.event.date }}</td>
-                        {% if currentUser.admin  %}
-                            <td>
-                                <a href="/match/{{ match.id }}/edit" class="btn btn-sm btn-warning">Edit</a>
-                            </td>
-                        {% endif %}
-                    </tr>
-                {% endfor %}
-            </table>
+            {% include 'matchesTable.twig' %}
         </div>
     </div>
 </div>

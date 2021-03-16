@@ -1,10 +1,17 @@
 <?php
 
 namespace Dreamstats\Service;
+
 use Dreamstats\Model\Event;
 
 class EventService extends PdoService
 {
+    public function delete(int $id)
+    {
+        $statement = $this->pdo->prepare("DELETE FROM event WHERE id = :id");
+        $statement->execute([':id' => $id]);
+    }
+
     public function insert(Event $event)
     {
         $statement = $this->pdo->prepare("INSERT INTO event (name, date) VALUES (:name, :date)");

@@ -13,3 +13,7 @@
         <span>{{ player.nickname }}</span>
     {% endif %}
 {% endmacro %}
+
+{% macro eventLink(e) %}
+    <a href="/event/{{ e.id }}">{{ e.name }}</a>
+{% endmacro %}

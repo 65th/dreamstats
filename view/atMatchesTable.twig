@@ -1,5 +1,5 @@
 {% import 'macro/playerMacro.twig' as pm %}
-<table class="my-table table-bordered table-striped" style="margin: auto;">
+<table class="my-table table-bordered table-striped at-matches-table">
     {% for atMatch in atMatches %}
         {% set score = atMatch.calcScore() %}
         {% set firstGame = atMatch.games[0] %}
@@ -9,7 +9,7 @@
             <td>{{ score.wins }}:{{ score.loses }}</td>
             <td class="{{ not score.isZatasheno() ? 'winner' }}">{{ pm.playerWithRace(atMatch.opponent1, firstGame.op1Race, true) }}</td>
             <td class="{{ not score.isZatasheno() ? 'winner' }}">{{ pm.playerWithRace(atMatch.opponent2, firstGame.op2Race, true) }}</td>
-            <td>{{ atMatch.event.name }}</td>
+            <td>{{ pm.eventLink(atMatch.event) }}</td>
             <td>
                 <button class="at-details-btn btn btn-sm btn-primary">Details</button>
                 {% if currentUser.admin %}

@@ -9,6 +9,11 @@ use Dreamstats\Model\TheMatch;
 
 class MatchService extends PdoService
 {
+    public function deleteByEventId($eventId) {
+        $statement = $this->pdo->prepare('DELETE FROM solo_match WHERE event_id = :eventId');
+        $statement->execute([':eventId' => $eventId]);
+    }
+
     public function insert(TheMatch $xxx)
     {
         $statement = $this->pdo->prepare("INSERT INTO solo_match (player_id, enemy_id, event_id, player_wins, enemy_wins)
@@ -39,17 +44,37 @@ class MatchService extends PdoService
         ]);
     }
 
+    /**
+     * @param $id
+     * @return TheMatch
+     */
     public function findById($id)
     {
         return $this->findWhere(new Player(), "m.ID = :id", [":id" => $id])[0];
     }
 
+    /**
+     * @param Player $player
+     * @return TheMatch[]
+     */
     public function findByPlayer(Player $player)
     {
         return $this->findWhere($player, "player_id = :id OR enemy_id = :id", [":id" => $player->id]);
     }
 
+    /**
+     * @param int $eventId
+     * @return TheMatch[]
+     */
+    public function findByEventId(int $eventId) {
+        return $this->findWhere(new Player(), 'event_id = :eventId', [':eventId' => $eventId], 'ASC');
+    }
 
+    /**
+     * @param Player $player
+     * @param Player $enemy
+     * @return TheMatch[]
+     */
     public function findByPlayers(Player $player, Player $enemy)
     {
         return $this->findWhere($player,
@@ -57,7 +82,14 @@ class MatchService extends PdoService
             [":playerId" => $player->id, ":enemyId" => $enemy->id]);
     }
 
-    private function findWhere(Player $mainPlayer, $where, $bindings)
+    /**
+     * @param Player $mainPlayer
+     * @param $where
+     * @param $bindings
+     * @param string $order
+     * @return TheMatch[]
+     */
+    private function findWhere(Player $mainPlayer, $where, $bindings, $order = 'DESC')
     {
         $matchesSql = "SELECT m.*, p.id AS player_id, p.nickname AS player_nickname, p.race AS player_race, p.country as player_country,
                            o.id AS enemy_id, o.nickname AS enemy_nickname, o.race AS enemy_race, o.country as enemy_country,
@@ -67,7 +99,7 @@ class MatchService extends PdoService
                            INNER JOIN player o ON m.enemy_id = o.id
                            INNER JOIN event e ON m.event_id = e.id
                            WHERE $where
-                           ORDER BY m.id DESC";
+                           ORDER BY m.id $order";
 
         $statement = $this->pdo->prepare($matchesSql);
         $statement->execute($bindings);
@@ -77,7 +109,7 @@ class MatchService extends PdoService
         foreach ($result as $row) {
             $matchx = new TheMatch();
             $matchx->id = $row['id'];
-            if ($row['player_id'] == $mainPlayer->id) {
+            if (!$mainPlayer->id || $row['player_id'] == $mainPlayer->id) {
                 $matchx->player = $this->extractPlayer($row, "player_");
                 $matchx->enemy = $this->extractPlayer($row, "enemy_");
                 $matchx->score = new Score($row['player_wins'], $row['enemy_wins']);

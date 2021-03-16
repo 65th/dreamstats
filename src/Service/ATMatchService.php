@@ -96,6 +96,12 @@ FROM at_match a
         $this->pdo->prepare('DELETE FROM at_match WHERE id = :id')->execute($params);
     }
 
+    public function deleteByEventId($eventId) {
+        $params = [':eventId' => $eventId];
+        $this->pdo->prepare('DELETE FROM at_game WHERE at_match_id IN (SELECT ID FROM at_match WHERE event_id = :eventId)')->execute($params);
+        $this->pdo->prepare('DELETE FROM at_match WHERE event_id = :eventId')->execute($params);
+    }
+
     /**
      * @param int $id
      * @return ATMatch[]
@@ -112,6 +118,15 @@ FROM at_match a
     public function findAll()
     {
         return $this->find(self::SELECT_QUERY . self::ORDER, []);
+    }
+
+    /**
+     * @param int $eventId
+     * @return ATMatch[]
+     */
+    public function findByEventId(int $eventId) {
+        $query = self::SELECT_QUERY . 'WHERE a.event_id = :eventId';
+        return $this->find($query, ['eventId' => $eventId]);
     }
 
     /**

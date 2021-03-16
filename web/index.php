@@ -74,6 +74,8 @@ $app->get("/player/{id}", PlayerController::class . ":show");
 $app->get("/event/new", EventController::class . ":showRegisterPage");
 $app->post("/event/new", EventController::class . ":register");
 $app->get("/event/{id}", EventController::class . ":show");
+$app->delete("/event/{id}", EventController::class . ":deleteEvent");
+$app->get("/events", EventController::class . ":showAll");
 
 $app->get("/match/new", MatchController::class . ":showRegisterForm");
 $app->post("/api/match", MatchController::class . ":registerApi");
