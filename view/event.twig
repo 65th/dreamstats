@@ -15,9 +15,9 @@
         {% endif %}
     </h1>
     <h5>{{ event.date }}</h5>
+    {% set excludeEvent = true %}
     <div class="row my-row">
         <div class="col-sm-12">
-            {% set excludeDate = true %}
             {% include 'matchesTable.twig' %}
         </div>
     </div>

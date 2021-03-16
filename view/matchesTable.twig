@@ -5,8 +5,8 @@
             <td class="{{ match.score.wins > match.score.loses ? "winner" }}">{{ pm.player(match.player) }}</td>
             <td>{{ match.score.wins }} - {{ match.score.loses }}</td>
             <td class="{{ match.score.wins < match.score.loses ? "winner" }}">{{ pm.player(match.enemy) }}</td>
-            <td>{{ pm.eventLink(atMatch.event) }}</td>
-            {% if not excludeDate %}
+            {% if not excludeEvent %}
+                <td>{{ pm.eventLink(match.event) }}</td>
                 <td>{{ match.event.date }}</td>
             {% endif %}
             {% if currentUser.admin %}

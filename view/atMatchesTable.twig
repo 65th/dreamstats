@@ -9,7 +9,9 @@
             <td>{{ score.wins }}:{{ score.loses }}</td>
             <td class="{{ not score.isZatasheno() ? 'winner' }}">{{ pm.playerWithRace(atMatch.opponent1, firstGame.op1Race, true) }}</td>
             <td class="{{ not score.isZatasheno() ? 'winner' }}">{{ pm.playerWithRace(atMatch.opponent2, firstGame.op2Race, true) }}</td>
-            <td>{{ pm.eventLink(atMatch.event) }}</td>
+            {% if not excludeEvent %}
+                <td>{{ pm.eventLink(atMatch.event) }}</td>
+            {% endif %}
             <td>
                 <button class="at-details-btn btn btn-sm btn-primary">Details</button>
                 {% if currentUser.admin %}
