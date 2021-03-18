@@ -42,7 +42,8 @@ class Countries
             "sg" => "Singapore",
             "nl" => "Netherlands",
             "at" => "Austria",
-            "rs" => "Serbia"
+            "rs" => "Serbia",
+            "ir" => "Iran"
         ];
     }
 }
