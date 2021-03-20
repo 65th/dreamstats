@@ -51,4 +51,38 @@ class ATMatch
         }
         return new Score($p, $o);
     }
+
+    public function setMainPlayer($mainPlayerId) {
+        if ($mainPlayerId === $this->player1->id) {
+            return;
+        }
+        if ($mainPlayerId === $this->player2->id) {
+            $tmp = $this->player1;
+            $this->player1 = $this->player2;
+            $this->player2 = $tmp;
+            foreach ($this->games as $game) {
+                $tmpr = $game->p1Race;
+                $game->p1Race = $game->p2Race;
+                $game->p2Race = $tmpr;
+            }
+        }
+        if (in_array($mainPlayerId, [$this->opponent1->id, $this->opponent2->id])) {
+            $tmp = $this->player1;
+            $tmp2 = $this->player2;
+            $this->player1 = $this->opponent1;
+            $this->player2 = $this->opponent2;
+            $this->opponent1 = $tmp;
+            $this->opponent2 = $tmp2;
+            foreach ($this->games as $game) {
+                $game->win = !$game->win;
+                $tmpr1 = $game->p1Race;
+                $tmpr2 = $game->p2Race;
+                $game->p1Race = $game->op1Race;
+                $game->p2Race = $game->op2Race;
+                $game->op1Race = $tmpr1;
+                $game->op2Race = $tmpr2;
+            }
+            $this->setMainPlayer($mainPlayerId);
+        }
+    }
 }

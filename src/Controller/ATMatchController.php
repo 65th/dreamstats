@@ -38,6 +38,9 @@ class ATMatchController extends DefaultController
             return $response->withStatus(404);
         }
         $atMatches = $this->atMatchService->findByPlayer($id);
+        foreach ($atMatches as $atMatch) {
+            $atMatch->setMainPlayer($player->id);
+        }
         $this->options += ['player' => $player, 'atMatches' => $atMatches];
 
         return $this->render($response, 'playerAtMatches.twig');
