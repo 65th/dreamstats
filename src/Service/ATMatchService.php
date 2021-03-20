@@ -11,7 +11,7 @@ use Dreamstats\Model\Player;
 
 class ATMatchService extends PdoService
 {
-    private const ORDER = ' ORDER BY a.id DESC, g.id ASC';
+    private const ORDER = ' ORDER BY e.date DESC, g.id ASC';
     private const SELECT_QUERY =
         'SELECT a.id              as match_id,
        a.event_id,
@@ -126,10 +126,11 @@ FROM at_match a
      * @return ATMatch[]
      */
     public function findByPair($playerId, $allyId) {
-        $query = self::SELECT_QUERY . 'WHERE (p1.id = :pid AND p2.id = :aid)'
-            . 'OR (p2.id = :pid AND p1.id = :aid)'
-            . 'OR (o1.id = :pid AND o2.id = :aid)'
-            . 'OR (o2.id = :pid AND o1.id = :aid)';
+        $query = self::SELECT_QUERY . 'WHERE (p1.id = :pid AND p2.id = :aid) '
+            . 'OR (p2.id = :pid AND p1.id = :aid) '
+            . 'OR (o1.id = :pid AND o2.id = :aid) '
+            . 'OR (o2.id = :pid AND o1.id = :aid) '
+            . self::ORDER;
         return $this->find($query, ['pid' => $playerId, 'aid' => $allyId]);
     }
 
