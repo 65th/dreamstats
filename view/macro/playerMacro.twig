@@ -1,7 +1,7 @@
-{% macro player(player) %}
+{% macro player(player, at) %}
     <img src="/img/flag/{{ player.country }}.png">
     <img src="/img/race/{{ player.race }}.gif">
-    <a href="/player/{{ player.id }}">{{ player.nickname }}</a>
+    <a href="/player/{{ player.id }}{{ at ? '/at' }}">{{ player.nickname }}</a>
 {% endmacro %}
 
 {% macro playerWithRace(player, race, withLink) %}
