@@ -11,7 +11,7 @@ use Dreamstats\Model\Player;
 
 class ATMatchService extends PdoService
 {
-    private const ORDER = ' ORDER BY e.date DESC, g.id ASC';
+    private const ORDER = ' ORDER BY e.date DESC, a.id DESC, g.id ASC';
     private const SELECT_QUERY =
         'SELECT a.id              as match_id,
        a.event_id,
