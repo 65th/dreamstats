@@ -20,6 +20,20 @@
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(() => {
+        const atEl = $('#at-select');
+        initCheckAtStatsUrl(atEl.val());
+        atEl.change(() => {
+            initCheckAtStatsUrl(atEl.val());
+        });
+    });
 
+    function initCheckAtStatsUrl(ally) {
+        const link = $('#check-at-pair-stats');
+        const initUrl = link.data('init-href');
+        link.attr('href', `${initUrl}${ally}`);
+    }
+</script>
 </body>
 </html>

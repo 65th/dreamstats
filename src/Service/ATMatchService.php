@@ -121,6 +121,19 @@ FROM at_match a
     }
 
     /**
+     * @param $playerId
+     * @param $allyId
+     * @return ATMatch[]
+     */
+    public function findByPair($playerId, $allyId) {
+        $query = self::SELECT_QUERY . 'WHERE (p1.id = :pid AND p2.id = :aid)'
+            . 'OR (p2.id = :pid AND p1.id = :aid)'
+            . 'OR (o1.id = :pid AND o2.id = :aid)'
+            . 'OR (o2.id = :pid AND o1.id = :aid)';
+        return $this->find($query, ['pid' => $playerId, 'aid' => $allyId]);
+    }
+
+    /**
      * @param int $eventId
      * @return ATMatch[]
      */

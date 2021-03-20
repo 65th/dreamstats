@@ -68,6 +68,7 @@ $app->get("/player/new", PlayerController::class . ":showRegisterForm");
 $app->post("/player/new", PlayerController::class . ":register");
 $app->get("/player/{playerId}/vs/{enemyId}", PlayerController::class . ":compare");
 $app->get("/player/{id}/edit", PlayerController::class . ":showEditForm");
+$app->get("/player/{name}/and/{ally}", ATMatchController::class . ":showPairAtMatches");
 $app->get("/player/{id}/at", ATMatchController::class . ":showPlayerATMatches");
 $app->get("/player/{id}", PlayerController::class . ":show");
 

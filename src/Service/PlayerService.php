@@ -34,15 +34,16 @@ class PlayerService extends PdoService
         $statement->execute([':id' => $id]);
         $result = $statement->fetchAll();
 
-        $player = null;
-        if ($result) {
-            $player = new Player();
-            foreach ($result as $row) {
-                $player = $this->extractPlayer($row);
-            }
-        }
+        return $this->buildPlayer($result);
+    }
 
-        return $player;
+    public function findByName($name) {
+        $sql = 'SELECT * FROM player WHERE nickname = :nickname';
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([':nickname' => $name]);
+        $result = $stmt->fetchAll();
+
+        return $this->buildPlayer($result);
     }
 
     public function insert(Player $player)
@@ -74,5 +75,22 @@ class PlayerService extends PdoService
         }
 
         return $options;
+    }
+
+    /**
+     * @param array $result
+     * @return Player|null
+     */
+    public function buildPlayer(array $result)
+    {
+        $player = null;
+        if ($result) {
+            $player = new Player();
+            foreach ($result as $row) {
+                $player = $this->extractPlayer($row);
+            }
+        }
+
+        return $player;
     }
 }

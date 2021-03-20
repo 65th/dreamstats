@@ -38,12 +38,30 @@ class ATMatchController extends DefaultController
             return $response->withStatus(404);
         }
         $atMatches = $this->atMatchService->findByPlayer($id);
+        $allies = [];
+        foreach ($atMatches as $atMatch) {
+            $atMatch->setMainPlayer($player->id);
+            $allies[] = $atMatch->player2;
+        }
+        $allies = array_unique($allies, SORT_REGULAR);
+        $this->options += ['player' => $player, 'atMatches' => $atMatches, 'allies' => $allies];
+
+        return $this->render($response, 'playerAtMatches.twig');
+    }
+
+    public function showPairAtMatches(ServerRequestInterface $request, ResponseInterface $response, $args) {
+        $player = $this->playerService->findByName($args['name']);
+        $ally = $this->playerService->findByName($args['ally']);
+        if (!$player || !$ally) {
+            return $response->withStatus(404);
+        }
+        $atMatches = $this->atMatchService->findByPair($player->id, $ally->id);
         foreach ($atMatches as $atMatch) {
             $atMatch->setMainPlayer($player->id);
         }
-        $this->options += ['player' => $player, 'atMatches' => $atMatches];
+        $this->options += ['player' => $player, 'ally' => $ally, 'atMatches' => $atMatches];
 
-        return $this->render($response, 'playerAtMatches.twig');
+        return $this->render($response, 'atPairMatches.twig');
     }
 
     public function showAllAt(ServerRequestInterface $request, ResponseInterface $response)

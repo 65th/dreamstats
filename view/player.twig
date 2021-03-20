@@ -17,17 +17,25 @@
                     <tr>
                         <td><img src="/img/race/{{ race }}.gif"></td>
                         <td>{{ stat['total'].wins }} - {{ stat['total'].loses }}</td>
-                        <td>{{ stat['total'].loses > 0 or stat['total'].wins > 0 ? (stat['total'].wins * 100 / (stat['total'].wins + stat['total'].loses))|round(1) : 0 }}%</td>
+                        <td>{{ stat['total'].loses > 0 or stat['total'].wins > 0 ? (stat['total'].wins * 100 / (stat['total'].wins + stat['total'].loses))|round(1) : 0 }}
+                            %
+                        </td>
                         <td>({{ stat['maps'].wins }} - {{ stat['maps'].loses }})</td>
-                        <td>{{ stat['maps'].loses > 0 or stat['maps'].wins > 0 ? (stat['maps'].wins * 100 / (stat['maps'].wins + stat['maps'].loses))|round(1) : 0 }}%</td>
+                        <td>{{ stat['maps'].loses > 0 or stat['maps'].wins > 0 ? (stat['maps'].wins * 100 / (stat['maps'].wins + stat['maps'].loses))|round(1) : 0 }}
+                            %
+                        </td>
                     </tr>
                 {% endfor %}
                 <tr>
                     <td></td>
                     <td>{{ player.statistics['total'].wins }} - {{ player.statistics['total'].loses }}</td>
-                    <td>{{ player.statistics['total'].loses > 0 or player.statistics['total'].wins > 0 ? (player.statistics['total'].wins * 100 / (player.statistics['total'].wins + player.statistics['total'].loses))|round(1) : 0 }}%</td>
+                    <td>{{ player.statistics['total'].loses > 0 or player.statistics['total'].wins > 0 ? (player.statistics['total'].wins * 100 / (player.statistics['total'].wins + player.statistics['total'].loses))|round(1) : 0 }}
+                        %
+                    </td>
                     <td>{{ player.statistics['maps'].wins }} - {{ player.statistics['maps'].loses }}</td>
-                    <td>{{ player.statistics['maps'].loses > 0 or player.statistics['maps'].wins > 0 ? (player.statistics['maps'].wins * 100 / (player.statistics['maps'].wins + player.statistics['maps'].loses))|round(1) : 0 }}%</td>
+                    <td>{{ player.statistics['maps'].loses > 0 or player.statistics['maps'].wins > 0 ? (player.statistics['maps'].wins * 100 / (player.statistics['maps'].wins + player.statistics['maps'].loses))|round(1) : 0 }}
+                        %
+                    </td>
                 </tr>
             </table>
         </div>
@@ -40,17 +48,17 @@
 </div>
 
 <script>
-    $("document").ready(function() {
+    $("document").ready(function () {
         let vsEl = $("#vs");
         initCheckStatsUrl($(vsEl).val());
-        $(vsEl).change(function() {
+        $(vsEl).change(function () {
             let playerId = $(this).val();
             initCheckStatsUrl(playerId);
         })
     });
 
     function initCheckStatsUrl(playerId) {
-        $("#check-stats").attr("href", `${window.location.href }/vs/${playerId}`);
+        $("#check-stats").attr("href", `${window.location.href}/vs/${playerId}`);
     }
 </script>
 

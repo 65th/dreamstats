@@ -8,9 +8,15 @@
             {% endif %}
             {% if atMatches %}
                 <a href="/player/{{ player.id }}" class="btn btn-sm btn-primary">Check solo stats</a>
+                <a data-init-href="/player/{{ player.nickname }}/and/" class="btn btn-primary btn-sm" id="check-at-pair-stats">Check stats with:</a>
+                <select id="at-select">
+                    {% for ally in allies %}
+                        <option value="{{ ally.nickname }}">{{ ally.nickname }}</option>
+                    {% endfor %}
+                </select>
             {% else %}
                 <a href="/player/{{ player.id }}/at" class="btn btn-sm btn-primary">Check AT stats</a>
-                <a href="/player/{{ player.id }}" class="btn btn-primary btn-sm" id="check-stats" target="_blank">Check stats vs:</a>
+                <a href="/player/{{ player.id }}" class="btn btn-primary btn-sm" id="check-stats">Check stats vs:</a>
                 <select id="vs">
                     {% for player in dreamsPlayers %}
                         <option value="{{ player.id }}">{{ player.nickname }}</option>

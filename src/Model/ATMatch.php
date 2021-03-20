@@ -52,7 +52,7 @@ class ATMatch
         return new Score($p, $o);
     }
 
-    public function setMainPlayer($mainPlayerId) {
+    public function setMainPlayer(int $mainPlayerId) {
         if ($mainPlayerId === $this->player1->id) {
             return;
         }
