@@ -43,7 +43,8 @@ class Countries
             "nl" => "Netherlands",
             "at" => "Austria",
             "rs" => "Serbia",
-            "ir" => "Iran"
+            "ir" => "Iran",
+            "hr" => "Croatia"
         ];
     }
 }
