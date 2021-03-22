@@ -63,13 +63,7 @@ FROM at_match a
     {
         $query = "INSERT INTO at_match (event_id, player1_id, player2_id, opponent1_id, opponent2_id)
                   VALUES (:eventId, :player1Id, :player2Id, :opponent1Id, :opponent2Id)";
-        $params = [
-            'eventId' => $atMatch->event->id,
-            'player1Id' => $atMatch->player1->id,
-            'player2Id' => $atMatch->player2->id,
-            'opponent1Id' => $atMatch->opponent1->id,
-            'opponent2Id' => $atMatch->opponent2->id,
-        ];
+        $params = $this->params($atMatch);
         $this->pdo->prepare($query)->execute($params);
         $atMatch->id = (int)$this->pdo->lastInsertId();
         $query = "INSERT INTO at_game (player1_race, player2_race, opponent1_race, opponent2_race, map, win, at_match_id)
@@ -90,13 +84,41 @@ FROM at_match a
         }
     }
 
-    public function delete(int $id) {
+    public function update(ATMatch $atMatch)
+    {
+        $query = "UPDATE at_match SET event_id = :eventId, player1_id = :player1Id, player2_id = :player2Id, 
+                    opponent1_id = :opponent1Id, opponent2_id = :opponent2Id WHERE id = :id";
+        $this->pdo->prepare($query)->execute($this->params($atMatch));
+    }
+
+    /**
+     * @param ATMatch $atMatch
+     * @return array
+     */
+    private function params(ATMatch $atMatch): array
+    {
+        $params = [
+            'eventId' => $atMatch->event->id,
+            'player1Id' => $atMatch->player1->id,
+            'player2Id' => $atMatch->player2->id,
+            'opponent1Id' => $atMatch->opponent1->id,
+            'opponent2Id' => $atMatch->opponent2->id,
+        ];
+        if ($atMatch->id) {
+            $params['id'] = $atMatch->id;
+        }
+        return $params;
+    }
+
+    public function delete(int $id)
+    {
         $params = ['id' => $id];
         $this->pdo->prepare('DELETE FROM at_game WHERE at_match_id = :id')->execute($params);
         $this->pdo->prepare('DELETE FROM at_match WHERE id = :id')->execute($params);
     }
 
-    public function deleteByEventId($eventId) {
+    public function deleteByEventId($eventId)
+    {
         $params = [':eventId' => $eventId];
         $this->pdo->prepare('DELETE FROM at_game WHERE at_match_id IN (SELECT ID FROM at_match WHERE event_id = :eventId)')->execute($params);
         $this->pdo->prepare('DELETE FROM at_match WHERE event_id = :eventId')->execute($params);
@@ -125,7 +147,8 @@ FROM at_match a
      * @param $allyId
      * @return ATMatch[]
      */
-    public function findByPair($playerId, $allyId) {
+    public function findByPair($playerId, $allyId)
+    {
         $query = self::SELECT_QUERY . 'WHERE (p1.id = :pid AND p2.id = :aid) '
             . 'OR (p2.id = :pid AND p1.id = :aid) '
             . 'OR (o1.id = :pid AND o2.id = :aid) '
@@ -138,9 +161,21 @@ FROM at_match a
      * @param int $eventId
      * @return ATMatch[]
      */
-    public function findByEventId(int $eventId) {
+    public function findByEventId(int $eventId)
+    {
         $query = self::SELECT_QUERY . 'WHERE a.event_id = :eventId';
         return $this->find($query, ['eventId' => $eventId]);
+    }
+
+    /**
+     * @param int $id
+     * @return ATMatch|null
+     */
+    public function findById(int $id)
+    {
+        $query = self::SELECT_QUERY . 'WHERE a.id = :id';
+        $atMatches = $this->find($query, ['id' => $id]);
+        return $atMatches ? $atMatches[array_key_first($atMatches)] : null;
     }
 
     /**

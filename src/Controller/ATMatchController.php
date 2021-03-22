@@ -70,15 +70,54 @@ class ATMatchController extends DefaultController
         return $this->render($response, 'atMainPage.twig');
     }
 
-    public function showAtMatchForm(ServerRequestInterface $request, ResponseInterface $response)
+    public function showAtMatchForm(ServerRequestInterface $request, ResponseInterface $response, $args)
     {
         $forbidden = $this->forbidIfNotAdmin($response);
         if ($forbidden) return $forbidden;
+
+        $id = $args['id'] ?? null;
+        if ($id) {
+            $atMatch = $this->atMatchService->findById($id);
+            if (!$atMatch) {
+                return $response->withStatus(404);
+            }
+            $this->options['atMatch'] = $atMatch;
+        }
+
         $this->options += [
             'events' => $this->eventService->findAll(),
             'players' => $this->playerService->findAll()
         ];
         return $this->render($response, 'atMatchNewForm.twig');
+    }
+
+    public function updateAtMatch(ServerRequestInterface $request, Response $response, $args) {
+        $forbidden = $this->forbidIfNotAdmin($response);
+        if ($forbidden) return $forbidden;
+
+        $form = $request->getParsedBody();
+        $atMatch = $this->atMatchService->findById($form['id']);
+        if (!$atMatch) {
+            return $response->withStatus(404);
+        }
+        if ($form['eventId'] != $atMatch->event->id) {
+            $atMatch->event = $this->eventService->findById($form['eventId']);
+        }
+        if ($form['player1Id'] != $atMatch->player1->id) {
+            $atMatch->player1 = $this->playerService->findById($form['player1Id']);
+        }
+        if ($form['player2Id'] != $atMatch->player2->id) {
+            $atMatch->player2 = $this->playerService->findById($form['player2Id']);
+        }
+        if ($form['opponent1Id'] != $atMatch->opponent1->id) {
+            $atMatch->opponent1 = $this->playerService->findById($form['opponent1Id']);
+        }
+        if ($form['opponent2Id'] != $atMatch->opponent2->id) {
+            $atMatch->opponent2 = $this->playerService->findById($form['opponent2Id']);
+        }
+        $this->atMatchService->update($atMatch);
+
+        return $response->withStatus(201)->withJson($atMatch);
     }
 
     public function registerNewATMatch(ServerRequestInterface $request, Response $response)

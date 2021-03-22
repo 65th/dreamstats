@@ -16,7 +16,7 @@
         <div class="col-md-12">
             <form class="form-inline" id="at-match" method="POST">
                 {% if atMatch %}
-                    <input type="hidden" class="id" name="id" value="{{ atMatch.id }}">
+                    <input type="hidden" id="at-match-id" class="id" name="id" value="{{ atMatch.id }}">
                 {% endif %}
                 <select class="form-control mr-sm-2" id="player1" name="player1">
                     {% for player in players if player.isFromDreams or atMatch.player1.id == player.id %}
@@ -110,13 +110,18 @@
             games
         };
 
+        const id = $('#at-match-id').val();
+        if (id) {
+            atMatch.id = id;
+        }
+
         $('button, input, select').prop('disabled', true);
         try {
             const response = await $.ajax({
-                url: '/at/register',
+                url: id ? '/at/' + id : '/at/register',
                 data: atMatch,
                 dataType: 'json',
-                method: 'post'
+                method: id ? 'put' : 'post'
             });
             if (response.id) {
                 location.reload();
@@ -126,7 +131,7 @@
             }
         } catch (e) {
             console.error(e);
-            alert(e);
+            alert(JSON.stringify(e));
         }
     });
 

@@ -15,6 +15,7 @@
             <td>
                 <button class="at-details-btn btn btn-sm btn-primary">Details</button>
                 {% if currentUser.admin %}
+                    <a class="btn btn-warning btn-sm" href="/at/{{ atMatch.id }}">Edit</a>
                     <button class="btn btn-danger btn-sm btn-delete-match" data-match-id="{{ atMatch.id }}">Delete</button>
                 {% endif %}
             </td>

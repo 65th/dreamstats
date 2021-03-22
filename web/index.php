@@ -61,6 +61,8 @@ $app->get("/", IndexController::class . ":index");
 
 $app->get('/at/new', ATMatchController::class . ':showAtMatchForm');
 $app->post('/at/register', ATMatchController::class . ':registerNewATMatch');
+$app->get('/at/{id}', ATMatchController::class . ":showAtMatchForm");
+$app->put('/at/{id}', ATMatchController::class . ":updateAtMatch");
 $app->get('/at', ATMatchController::class . ":showAllAt");
 $app->delete('/at/{id}', ATMatchController::class . ':deleteAtMatch');
 
