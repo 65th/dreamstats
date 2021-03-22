@@ -3,12 +3,21 @@
 <head>
     <title>{{ player.nickname }}</title>
     {% include 'commonHeader.twig' %}
+    <style>
+        #player-header {
+            text-align: center;
+        }
+
+        .at-matches-table {
+            margin: auto;
+        }
+    </style>
 </head>
 <body>
 {% include 'navbar.twig' %}
 {% import 'macro/playerMacro.twig' as pm %}
 
-<div class="container">
+<div class="container-fluid">
     {% include 'playerHeader.twig' %}
     <div class="row my-row">
         <div class="col-sm-12">
